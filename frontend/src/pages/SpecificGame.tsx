@@ -93,6 +93,21 @@ export const SpecificGame = () => {
               <span>Plataforma</span>
               <span>Windows</span>
             </div>
+            <Divider />
+            <div className="flex justify-between">
+              <span>Idioma</span>
+              <span>Espanol</span>
+            </div>
+            <Divider />
+            <div className="flex justify-between">
+              <span>Categoria</span>
+              <span>Deportes</span>
+            </div>
+            <Divider />
+            <div className="flex justify-between">
+              <span>Tipo</span>
+              <span>Multi-player</span>
+            </div>
           </div>
         </article>
       </section>
