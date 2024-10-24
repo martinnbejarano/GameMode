@@ -1,27 +1,37 @@
 import { useFetch } from "../../Hooks";
+import { Carousel } from "../index";
 
-const url = "https://api.example.com/data";
-// User ejemplo
-// const userUrl = "https://api.example.com/user";
+const url = "/games";
 
-interface Data {
-  name: string;
-  lastName: string;
-  age: number;
+interface MenuProps {
+  // props específicas del menú si las hay
 }
 
-const Menu: React.FC = () => {
-  const { data, loading, error } = useFetch<Data>(url);
+interface Game {
+  _id: string;
+  name: string;
+  coverPicture: string;
+  gallery: string[];
+  price: number;
+}
 
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
+const Menu: React.FC<MenuProps> = () => {
+  const { data, loading, error } = useFetch<Game[]>(url);
 
-  if (error) {
-    return <div>UPS! Hay un error: {error.message}</div>;
-  }
-
-  return <div>{JSON.stringify(data)}</div>;
+  /* if (loading) return <div>Cargando...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+*/
+  return (
+    <>
+      {data && (
+        <Carousel
+          data={data.map((game) => game.coverPicture)}
+          loading={loading}
+          error={error || undefined}
+        />
+      )}
+    </>
+  );
 };
 
 export default Menu;
