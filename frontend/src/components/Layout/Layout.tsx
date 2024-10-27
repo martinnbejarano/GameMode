@@ -1,5 +1,5 @@
 import React from "react";
-import { Header } from "../index";
+import { Footer, Header } from "..";
 import "./Layout.css";
 
 interface LayoutProps {
@@ -11,7 +11,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="layout">
       <Header />
       <main>{children}</main>
-      {/* Puedes agregar un componente Footer aquí si lo deseas */}
+      <Footer />
     </div>
   );
 };

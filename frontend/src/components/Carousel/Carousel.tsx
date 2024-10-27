@@ -13,7 +13,7 @@ interface CarouselProps<T> {
   error?: Error;
 }
 
-export const Carousel = <T,>({ data, loading, error }: CarouselProps<T>) => {
+const Carousel = <T,>({ data, loading, error }: CarouselProps<T>) => {
   if (loading) {
     return <div>Cargando...</div>;
   }
@@ -31,3 +31,5 @@ export const Carousel = <T,>({ data, loading, error }: CarouselProps<T>) => {
     </ResponsiveCarousel>
   );
 };
+
+export default Carousel;
