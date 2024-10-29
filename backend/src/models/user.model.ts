@@ -9,7 +9,7 @@ const userSchema = new Schema(
     profilePicture: { type: String, default: null },
     games: [{ type: Schema.Types.ObjectId, ref: "Games", default: [] }],
     wishlist: [{ type: Schema.Types.ObjectId, ref: "Games", default: [] }],
-    isEmailVerified: { type: Boolean, default: false },
+    resetPasswordToken: { type: String, default: null },
   },
   { timestamps: true }
 );

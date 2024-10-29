@@ -3,11 +3,11 @@ import { envConfig } from "./env.config.js";
 import { Response } from "express";
 
 const generateTokenAndSetCookie = (
-  userId: string,
+  _id: string,
   role: "user" | "company",
   res: Response
 ) => {
-  const token = jwt.sign({ userId, role }, envConfig.JWT_SECRET as string, {
+  const token = jwt.sign({ _id, role }, envConfig.JWT_SECRET as string, {
     expiresIn: "15d",
   });
 

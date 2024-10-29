@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const commentSchema = new Schema({
+const reviewSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "Users", required: true },
   game: { type: Schema.Types.ObjectId, ref: "Games", required: true },
   content: { type: String, required: true },
@@ -8,4 +8,4 @@ const commentSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export const Comment = model("Comments", commentSchema);
+export const Review = model("Reviews", reviewSchema);

@@ -7,10 +7,15 @@ const gameSchema = new Schema(
     coverPicture: { type: String, default: null },
     gallery: [{ type: String, default: [] }],
     price: { type: Number, required: true },
-    lenguage: { type: String, required: true },
+    language: { type: String, required: true },
     platform: {
       type: String,
       enum: ["PC", "Playstation", "Xbox"],
+      required: true,
+    },
+    category: {
+      type: String,
+      enum: ["Aventura", "Acción", "RPG", "MOBA", "Estrategia", "Simulación"],
       required: true,
     },
     systemRequirements: {
@@ -27,7 +32,11 @@ const gameSchema = new Schema(
       ref: "Companies",
       required: true,
     },
-    comments: [{ type: Schema.Types.ObjectId, ref: "Comments", default: [] }],
+    reviews: [{ type: Schema.Types.ObjectId, ref: "Reviews", default: [] }],
+    totalSales: { type: Number, default: 0 },
+    averageRating: { type: Number, default: 0 },
+    views: { type: Number, default: 0 },
+    wishlistCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

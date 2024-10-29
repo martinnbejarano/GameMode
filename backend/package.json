@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "node --loader ts-node/esm src/index.ts",
-    "build": "tsc --module commonjs"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +34,7 @@
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2",
-    "tsconfig-paths": "^4.1.0"
+    "tsconfig-paths": "^4.1.0",
+    "tsx": "^4.7.1"
   }
 }

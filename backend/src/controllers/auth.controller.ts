@@ -17,7 +17,6 @@ export const register = async (req: Request, res: Response) => {
       !type ||
       (type !== "user" && type !== "company")
     ) {
-    console.log(req)
       return res
         .status(400)
         .json({ message: "No se pudo registrar el usuario" });

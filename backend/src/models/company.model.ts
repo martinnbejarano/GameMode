@@ -11,7 +11,7 @@ const companySchema = new Schema(
       ref: "Games",
       default: [],
     },
-    isEmailVerified: { type: Boolean, default: false },
+    resetPasswordToken: { type: String, default: null },
   },
   { timestamps: true }
 );
