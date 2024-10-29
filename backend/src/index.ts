@@ -1,11 +1,19 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import indexRoutes from "./routes/index.routes.js";
 import { envConfig } from "./utils/env.config.js";
 import { connectToMongoDB } from "./DB/dbConnection.js";
 
 const app = express();
 const PORT = envConfig.PORT || 3000;
+
+app.use(
+  cors({
+    origin: envConfig.FRONTEND_URL || "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
