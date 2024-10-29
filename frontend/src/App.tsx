@@ -1,15 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { SpecificGame } from "./pages/SpecificGame";
-import { Layout } from "./components/Layout";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<SpecificGame />} />
-        </Route>
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }
