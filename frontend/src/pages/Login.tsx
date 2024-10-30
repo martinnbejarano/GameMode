@@ -3,7 +3,12 @@ import { Input, Button } from "@nextui-org/react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { axi } from "../utils/axiosInstance";
 import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { ForgotPasswordModal } from "../components/ForgotPasswordModal";
+
 export const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,9 +20,15 @@ export const Login: React.FC = () => {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    console.log(formData);
-    const { data } = await axi.post("/auth/sessions", formData);
-    useAuthStore.setState({ user: data.user, isAuthenticated: true });
+    try {
+      const { data } = await axi.post("/auth/sessions", formData);
+      useAuthStore.setState({ user: data.user, isAuthenticated: true });
+      toast.success("Inicio de sesión exitoso");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al iniciar sesión");
+    }
   };
 
   const toggleVisibility = () => {
@@ -41,6 +52,7 @@ export const Login: React.FC = () => {
         <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
           <Input
             label="Email"
+            variant="flat"
             name="email"
             value={formData.email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -105,9 +117,7 @@ export const Login: React.FC = () => {
           <Button className="w-full bg-primaryv2 text-white" type="submit">
             Iniciar sesión
           </Button>
-          <p className="text-start text-sm text-white hover:underline cursor-pointer active:text-gray-200">
-            Has olvidado tu contraseña?
-          </p>
+          <ForgotPasswordModal />
         </form>
       </section>
     </div>

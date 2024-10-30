@@ -1,11 +1,19 @@
 import express, { RequestHandler } from "express";
-import { register, login, logout } from "../controllers/auth.controller.js";
+import {
+  register,
+  login,
+  logout,
+  forgotPassword,
+  resetPassword,
+} from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
 router.post("/users", register as RequestHandler);
 router.post("/sessions", login as RequestHandler);
 router.post("/logout", logout as RequestHandler);
+router.post("/forgot-password", forgotPassword as RequestHandler);
+router.post("/reset-password/:id/:token", resetPassword as RequestHandler);
 router.get("/ping", (_req, res) => {
   res.send("pong");
 });

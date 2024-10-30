@@ -1,8 +1,11 @@
-import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import nodemailer from "nodemailer";
+import generateTokenAndSetCookie from "../utils/generateToken.js";
+import { Request, Response } from "express";
+import { envConfig } from "../utils/env.config.js";
 import { User } from "../models/user.model.js";
 import { Company } from "../models/company.model.js";
-import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -130,4 +133,65 @@ export const logout = (req: Request, res: Response) => {
     console.log("Error in logout controller", (err as Error).message);
     res.status(500).json({ error: "Internal server error" });
   }
+};
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ message: "El usuario no existe" });
+  }
+
+  const token = jwt.sign({ id: user._id }, envConfig.JWT_SECRET as string, {
+    expiresIn: "1d",
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: envConfig.EMAIL_USER,
+      pass: envConfig.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: envConfig.EMAIL_USER,
+    to: email,
+    subject: "Restablecer contraseña",
+    text: `${envConfig.FRONTEND_URL}/reset-password/${user._id}/${token}`,
+  };
+
+  transporter.sendMail(
+    mailOptions,
+    (error: Error | null, _info: nodemailer.SentMessageInfo) => {
+      if (error) {
+        console.log("Error sending email", error);
+      } else {
+        return res.status(200).json({ message: "Email sent successfully" });
+      }
+    }
+  );
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(400).json({ message: "El usuario no existe" });
+  }
+
+  jwt.verify(token, envConfig.JWT_SECRET as string, async (err, decoded) => {
+    if (err) {
+      return res.status(400).json({ message: "Token inválido" });
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      user.password = hashedPassword;
+      await user.save();
+      return res
+        .status(200)
+        .json({ message: "Contraseña restablecida exitosamente" });
+    }
+  });
 };
