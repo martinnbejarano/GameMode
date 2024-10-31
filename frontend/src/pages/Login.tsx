@@ -22,9 +22,9 @@ export const Login: React.FC = () => {
     e.preventDefault();
     try {
       const { data } = await axi.post("/auth/sessions", formData);
-      useAuthStore.setState({ user: data.user, isAuthenticated: true });
+      useAuthStore.setState({ user: data });
       toast.success("Inicio de sesión exitoso");
-      navigate("/");
+      navigate(data.type === "user" ? "/" : "/company/dashboard");
     } catch (error) {
       console.log(error);
       toast.error("Error al iniciar sesión");

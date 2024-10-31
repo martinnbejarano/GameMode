@@ -35,14 +35,10 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Las contraseñas no coinciden" });
     }
 
-    let existingAccount;
-    if (type === "user") {
-      existingAccount = await User.findOne({ email });
-    } else if (type === "company") {
-      existingAccount = await Company.findOne({ email });
-    }
+    const existingUserAccount = await User.findOne({ email });
+    const existingCompanyAccount = await Company.findOne({ email });
 
-    if (existingAccount) {
+    if (existingUserAccount || existingCompanyAccount) {
       return res.status(400).json({ message: "La cuenta ya existe" });
     }
 
