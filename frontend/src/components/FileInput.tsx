@@ -1,37 +1,46 @@
-import { useReducer, useState, type ChangeEvent, type DragEvent } from "react";
+import {
+  useReducer,
+  useState,
+  type ChangeEvent,
+  type DragEvent,
+  useEffect,
+} from "react";
 import { toast } from "react-hot-toast";
-import { MdUpload } from "react-icons/md";
+import { MdUpload, MdDelete } from "react-icons/md";
+import {
+  fileInputReducer,
+  type FileWithPreview,
+  type FileInputAction,
+} from "../reducers/fileInputReducer";
 
-interface FileWithPreview {
-  file: File;
-  preview: string;
-  error?: boolean;
-  status?: "pending" | "uploading" | "complete" | "error";
+interface FileInputProps {
+  initialImages?: string[];
+  onImagesChange?: (files: File[]) => void;
 }
 
-type Action = {
-  type: "ADD_FILES";
-  payload: FileWithPreview[];
-};
-
-const FileInput = () => {
+const FileInput = ({ initialImages = [], onImagesChange }: FileInputProps) => {
   const [dragActive, setDragActive] = useState<boolean>(false);
-  const [files, dispatch] = useReducer(
-    (state: FileWithPreview[], action: Action) => {
-      switch (action.type) {
-        case "ADD_FILES": {
-          if (state.length + action.payload.length > 10) {
-            toast.error("Máximo 10 archivos permitidos");
-            return state;
-          }
-          return [...state, ...action.payload];
-        }
-        default:
-          return state;
-      }
-    },
-    []
+  const [files, dispatch] = useReducer<
+    React.Reducer<FileWithPreview[], FileInputAction>,
+    string[]
+  >(fileInputReducer, initialImages, (images: string[]) =>
+    images.map((url) => ({
+      file: new File([], "existing-image"),
+      preview: url,
+      isExisting: true,
+      error: false,
+      status: "complete",
+    }))
   );
+
+  useEffect(() => {
+    if (onImagesChange) {
+      const newFiles: File[] = files
+        .filter((file) => !file.isExisting)
+        .map((file) => file.file);
+      onImagesChange(newFiles);
+    }
+  }, [files, onImagesChange]);
 
   const handleDrag = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -53,9 +62,12 @@ const FileInput = () => {
       toast.error("Solo se permiten archivos de imagen");
     }
 
-    const newFiles = imageFiles.map((file) => ({
+    const newFiles: FileWithPreview[] = imageFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
+      isExisting: false,
+      error: false,
+      status: "complete",
     }));
 
     dispatch({ type: "ADD_FILES", payload: newFiles });
@@ -65,17 +77,39 @@ const FileInput = () => {
     if (!e.target.files?.length) return;
 
     const selectedFiles = Array.from(e.target.files);
-    const newFiles = selectedFiles.map((file) => ({
+    const newFiles: FileWithPreview[] = selectedFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
+      isExisting: false,
+      error: false,
+      status: "complete",
     }));
 
     dispatch({ type: "ADD_FILES", payload: newFiles });
   };
 
+  const handleDelete = (index: number) => {
+    dispatch({ type: "REMOVE_FILE", payload: index });
+  };
+
+  const handleClearAll = () => {
+    dispatch({ type: "CLEAR_ALL" });
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      <h4 className="text-lg font-semibold">Imágenes del juego</h4>
+      <div className="flex justify-between items-center">
+        <h4 className="text-lg font-semibold">Imágenes del juego</h4>
+        {files.length > 0 && (
+          <button
+            onClick={handleClearAll}
+            className="text-red-500 hover:text-red-700 transition-colors text-sm flex items-center gap-1"
+          >
+            <MdDelete className="w-4 h-4" />
+            Borrar todas las imágenes
+          </button>
+        )}
+      </div>
 
       {files.length > 0 ? (
         <div className="overflow-x-auto">
@@ -94,9 +128,12 @@ const FileInput = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium">
                   ESTADO
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-medium">
+                  ACCIONES
+                </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200 bg-primaryv1/90">
+            <tbody className="divide-y divide-gray-200 bg-primaryv1/70">
               {files.map((file, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -122,13 +159,27 @@ const FileInput = () => {
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                       ${
-                        file.error
+                        file.isExisting
+                          ? "bg-blue-100 text-blue-800"
+                          : file.error
                           ? "bg-red-100 text-red-800"
                           : "bg-primaryv1/70 text-primaryv2"
                       }`}
                     >
-                      {file.error ? "Error" : "Listo"}
+                      {file.isExisting
+                        ? "Existente"
+                        : file.error
+                        ? "Error"
+                        : "Listo"}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleDelete(index)}
+                      className="text-red-500 hover:text-red-700 transition-colors"
+                    >
+                      <MdDelete className="w-5 h-5" />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -136,7 +187,7 @@ const FileInput = () => {
           </table>
 
           <div className="mt-4">
-            <label className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primaryv2 hover:bg-primaryv2/90 transition-colors">
+            <label className="cursor-pointer inline-flex items-center px-4 py-2 border border-primaryv2 text-sm font-medium rounded-md text-primaryv2 bg-transparent hover:bg-primaryv2/10 transition-colors">
               <MdUpload className="w-5 h-5 mr-2" />
               Agregar más archivos
               <input
