@@ -1,14 +1,14 @@
-export type SystemRequirements = {
+export interface SystemRequirements {
   OS: string;
   Processor: string;
   RAM: string;
   Storage: string;
   GraphicCard: string;
   DirectX: string;
-};
+}
 
-export type Game = {
-  id?: string;
+export interface Game {
+  _id?: string;
   name: string;
   description: string;
   price: number;
@@ -20,6 +20,10 @@ export type Game = {
   recommendedSystemRequirements: SystemRequirements;
   createdAt?: Date;
   updatedAt?: Date;
-  publisherId?: string;
+  companyId?: string;
   isActive?: boolean;
-};
+  averageRating?: number;
+  views?: number;
+  wishlistCount?: number;
+  totalSales?: number;
+}

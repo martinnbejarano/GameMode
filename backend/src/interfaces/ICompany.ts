@@ -1,11 +1,10 @@
 import { Types } from "mongoose";
 
 export interface ICompany {
-  _id: string;
+  _id: Types.ObjectId;
   email?: string;
   password?: string;
   username?: string;
-  games?: Types.ObjectId[];
   resetPasswordToken?: string | null;
   createdAt?: Date;
   updatedAt?: Date;

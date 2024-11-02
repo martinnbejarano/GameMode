@@ -7,35 +7,18 @@ import { FileInput } from "../components/FileInput";
 import { SystemRequirementInput } from "../components/SystemRequirementInput";
 import { Game } from "../interfaces/Game";
 import { handleGameFormChange } from "../utils/formHandlers";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { axi } from "../utils/axiosInstance";
+import { initialGameState } from "../constants/initialGameState";
+import { Selection } from "@nextui-org/react";
 
 type FormData = Game;
 
 export const PublishGame = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    description: "",
-    price: 0,
-    category: "",
-    platforms: [],
-    languages: [],
-    minimumSystemRequirements: {
-      OS: "",
-      Processor: "",
-      RAM: "",
-      Storage: "",
-      GraphicCard: "",
-      DirectX: "",
-    },
-    recommendedSystemRequirements: {
-      OS: "",
-      Processor: "",
-      RAM: "",
-      Storage: "",
-      GraphicCard: "",
-      DirectX: "",
-    },
-    images: [],
-  });
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState<FormData>(initialGameState);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -43,16 +26,71 @@ export const PublishGame = () => {
     handleGameFormChange(e, setFormData);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSelectionChange = (fieldName: string) => (e: Selection) => {
+    handleGameFormChange(e, setFormData, fieldName);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("price", formData.price.toString());
+      formDataToSend.append("category", formData.category);
+
+      formDataToSend.append("platforms", JSON.stringify(formData.platforms));
+      formDataToSend.append("languages", JSON.stringify(formData.languages));
+
+      const minReqs = {
+        OS: formData.minimumSystemRequirements?.OS || "",
+        Processor: formData.minimumSystemRequirements?.Processor || "",
+        RAM: formData.minimumSystemRequirements?.RAM || "",
+        GraphicCard: formData.minimumSystemRequirements?.GraphicCard || "",
+        DirectX: formData.minimumSystemRequirements?.DirectX || "",
+        Storage: formData.minimumSystemRequirements?.Storage || "",
+      };
+
+      const recReqs = {
+        OS: formData.recommendedSystemRequirements?.OS || "",
+        Processor: formData.recommendedSystemRequirements?.Processor || "",
+        RAM: formData.recommendedSystemRequirements?.RAM || "",
+        GraphicCard: formData.recommendedSystemRequirements?.GraphicCard || "",
+        DirectX: formData.recommendedSystemRequirements?.DirectX || "",
+        Storage: formData.recommendedSystemRequirements?.Storage || "",
+      };
+
+      formDataToSend.append(
+        "minimumSystemRequirements",
+        JSON.stringify(minReqs)
+      );
+      formDataToSend.append(
+        "recommendedSystemRequirements",
+        JSON.stringify(recReqs)
+      );
+
+      if (formData.images && formData.images.length > 0) {
+        formData.images.forEach((image) => {
+          formDataToSend.append("images", image);
+        });
+      }
+
+      await axi.post("/company/games", formDataToSend);
+
+      toast.success("Juego publicado exitosamente");
+      navigate("/company/my-games");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Error al publicar el juego");
+    }
   };
 
   const handleImagesChange = (files: File[]) => {
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
     setFormData((prev) => ({
       ...prev,
-      images: imageUrls,
+      images: files,
     }));
   };
 
@@ -98,21 +136,25 @@ export const PublishGame = () => {
           <Select
             label="Plataforma"
             selectionMode="multiple"
-            name="platforms"
-            onChange={handleChange}
+            selectedKeys={new Set(formData.platforms)}
+            onSelectionChange={handleSelectionChange("platforms")}
           >
             {gamePlatforms.map((platform) => (
-              <SelectItem key={platform}>{platform}</SelectItem>
+              <SelectItem key={platform} value={platform}>
+                {platform}
+              </SelectItem>
             ))}
           </Select>
           <Select
             label="Idioma"
             selectionMode="multiple"
-            name="languages"
-            onChange={handleChange}
+            selectedKeys={new Set(formData.languages)}
+            onSelectionChange={handleSelectionChange("languages")}
           >
             {languages.map((language) => (
-              <SelectItem key={language}>{language}</SelectItem>
+              <SelectItem key={language} value={language}>
+                {language}
+              </SelectItem>
             ))}
           </Select>
         </div>

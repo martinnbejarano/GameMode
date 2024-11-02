@@ -20,27 +20,16 @@ interface FileInputProps {
 
 const FileInput = ({ initialImages = [], onImagesChange }: FileInputProps) => {
   const [dragActive, setDragActive] = useState<boolean>(false);
-  const [files, dispatch] = useReducer<
-    React.Reducer<FileWithPreview[], FileInputAction>,
-    string[]
-  >(fileInputReducer, initialImages, (images: string[]) =>
-    images.map((url) => ({
-      file: new File([], "existing-image"),
+  const [files, dispatch] = useReducer(
+    fileInputReducer,
+    initialImages.map((url) => ({
+      file: new File([], url.split("/").pop() || ""),
       preview: url,
       isExisting: true,
       error: false,
-      status: "complete",
+      status: "complete" as const,
     }))
   );
-
-  useEffect(() => {
-    if (onImagesChange) {
-      const newFiles: File[] = files
-        .filter((file) => !file.isExisting)
-        .map((file) => file.file);
-      onImagesChange(newFiles);
-    }
-  }, [files, onImagesChange]);
 
   const handleDrag = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -67,7 +56,7 @@ const FileInput = ({ initialImages = [], onImagesChange }: FileInputProps) => {
       preview: URL.createObjectURL(file),
       isExisting: false,
       error: false,
-      status: "complete",
+      status: "complete" as const,
     }));
 
     dispatch({ type: "ADD_FILES", payload: newFiles });
@@ -82,19 +71,33 @@ const FileInput = ({ initialImages = [], onImagesChange }: FileInputProps) => {
       preview: URL.createObjectURL(file),
       isExisting: false,
       error: false,
-      status: "complete",
+      status: "complete" as const,
     }));
 
     dispatch({ type: "ADD_FILES", payload: newFiles });
+    onImagesChange?.(selectedFiles);
   };
 
   const handleDelete = (index: number) => {
     dispatch({ type: "REMOVE_FILE", payload: index });
+    const updatedFiles = files.filter((_, i) => i !== index).map((f) => f.file);
+    onImagesChange?.(updatedFiles);
   };
 
   const handleClearAll = () => {
     dispatch({ type: "CLEAR_ALL" });
+    onImagesChange?.([]);
   };
+
+  useEffect(() => {
+    return () => {
+      files.forEach((file) => {
+        if (file.preview) {
+          URL.revokeObjectURL(file.preview);
+        }
+      });
+    };
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">

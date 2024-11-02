@@ -4,6 +4,7 @@ import cors from "cors";
 import indexRoutes from "./routes/index.routes.js";
 import { envConfig } from "./utils/env.config.js";
 import { connectToMongoDB } from "./DB/dbConnection.js";
+import path from "path";
 
 const app = express();
 const PORT = envConfig.PORT || 3000;
@@ -20,6 +21,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api", indexRoutes);
+
+app.use(
+  "/images",
+  express.static(path.join(process.cwd(), "..", "frontend", "public", "images"))
+);
 
 app.listen(PORT, () => {
   connectToMongoDB();

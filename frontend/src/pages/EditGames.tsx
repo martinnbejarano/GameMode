@@ -48,10 +48,15 @@ export const EditGames = () => {
 
   const handleGameSelect = (gameId: string) => {
     setSelectedGame(gameId);
-    setCurrentImages([
-      "https://ejemplo.com/imagen1.jpg",
-      "https://ejemplo.com/imagen2.jpg",
-    ]);
+    setCurrentImages([]);
+
+    const selectedGameData = availableGames.find((game) => game.id === gameId);
+    if (selectedGameData) {
+      setFormData((prev) => ({
+        ...prev,
+        name: selectedGameData.name,
+      }));
+    }
   };
 
   const handleChange = (

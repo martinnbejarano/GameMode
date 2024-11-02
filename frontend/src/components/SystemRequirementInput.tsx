@@ -1,4 +1,4 @@
-import { Input } from "@nextui-org/react";
+import { Input, Select, SelectItem } from "@nextui-org/react";
 
 type SystemRequirementInputProps = {
   type: "minimum" | "recommended";
@@ -15,6 +15,8 @@ type SystemRequirementInputProps = {
   ) => void;
 };
 
+const osOptions = ["Windows", "MacOS", "Linux"];
+
 export const SystemRequirementInput = ({
   type,
   values,
@@ -28,12 +30,18 @@ export const SystemRequirementInput = ({
         {type === "minimum" ? "Mínimos" : "Recomendados"}
       </h5>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input
+        <Select
           label="Sistema Operativo"
           name={`${prefix}.OS`}
           value={values.OS}
           onChange={onChange}
-        />
+        >
+          {osOptions.map((os) => (
+            <SelectItem key={os} value={os}>
+              {os}
+            </SelectItem>
+          ))}
+        </Select>
         <Input
           label="Procesador"
           name={`${prefix}.Processor`}

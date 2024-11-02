@@ -1,0 +1,25 @@
+export const initialGameState = {
+  name: "",
+  description: "",
+  price: 0,
+  category: "",
+  platforms: [],
+  languages: [],
+  minimumSystemRequirements: {
+    OS: "",
+    Processor: "",
+    RAM: "",
+    Storage: "",
+    GraphicCard: "",
+    DirectX: "",
+  },
+  recommendedSystemRequirements: {
+    OS: "",
+    Processor: "",
+    RAM: "",
+    Storage: "",
+    GraphicCard: "",
+    DirectX: "",
+  },
+  images: [],
+};

@@ -1,26 +1,46 @@
 import { Game } from "../interfaces/Game";
+import { Selection } from "@nextui-org/react";
+
+type FormEvent =
+  | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  | Selection;
 
 export const handleGameFormChange = (
-  e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
-  setFormData: React.Dispatch<React.SetStateAction<Game>>
+  e: FormEvent,
+  setFormData: React.Dispatch<React.SetStateAction<Game>>,
+  fieldName?: string
 ) => {
-  const { name, value } = e.target;
-
-  if (
-    name.startsWith("minimumSystemRequirements") ||
-    name.startsWith("recommendedSystemRequirements")
-  ) {
-    const [requirementType, field] = name.split(".");
-    setFormData((prevData) => ({
-      ...prevData,
-      [requirementType as keyof Game]: {
-        ...(prevData[requirementType as keyof Game] as object),
-        [field]: value,
-      },
+  if (fieldName && "size" in e) {
+    const selectedValues = Array.from(e as Set<string>);
+    setFormData((prev) => ({
+      ...prev,
+      [fieldName]: selectedValues,
     }));
-  } else {
-    setFormData((prevData) => ({
-      ...prevData,
+    return;
+  }
+
+  if ("target" in e) {
+    const { name, value } = e.target;
+
+    if (name.includes("SystemRequirements")) {
+      const [type, field] = name.split(".");
+      setFormData((prev) => ({
+        ...prev,
+        [type]: {
+          ...prev[
+            type as keyof Pick<
+              Game,
+              "minimumSystemRequirements" | "recommendedSystemRequirements"
+            >
+          ],
+          [field]: value,
+        },
+      }));
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   }

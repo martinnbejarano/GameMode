@@ -3,11 +3,15 @@ import { Schema, model } from "mongoose";
 const gameSchema = new Schema(
   {
     name: { type: String, required: true },
+    companyId: {
+      type: Schema.Types.ObjectId,
+      ref: "Companies",
+      required: true,
+    },
     description: { type: String, required: true },
-    coverPicture: { type: String, default: null },
-    gallery: [{ type: String, default: [] }],
+    images: [{ type: String, default: [] }],
     price: { type: Number, required: true },
-    language: {
+    languages: {
       type: [String],
       enum: [
         "Español",
@@ -23,7 +27,7 @@ const gameSchema = new Schema(
       ],
       required: true,
     },
-    platform: {
+    platforms: {
       type: [String],
       enum: ["PC", "Playstation", "Xbox", "Nintendo", "VR"],
       required: true,
@@ -61,11 +65,6 @@ const gameSchema = new Schema(
       DirectX: { type: String, required: true },
     },
     releaseDate: { type: Date, required: Date.now },
-    developer: {
-      type: Schema.Types.ObjectId,
-      ref: "Companies",
-      required: true,
-    },
     reviews: [{ type: Schema.Types.ObjectId, ref: "Reviews", default: [] }],
     totalSales: { type: Number, default: 0 },
     averageRating: { type: Number, default: 0 },
