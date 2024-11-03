@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { axi } from "../utils/axiosInstance";
+import { AxiosError } from "axios";
 
-const API_BASE_URL = "http://localhost:3000/api";
 type Data<T> = T | null;
-type ErrorType = Error | null;
+type ErrorType = AxiosError | null;
 
 interface Params<T> {
   data: Data<T>;
   loading: boolean;
   error: ErrorType;
+  refetch: () => Promise<void>;
 }
 
 export const useFetch = <T>(endpoint: string): Params<T> => {
@@ -15,39 +17,22 @@ export const useFetch = <T>(endpoint: string): Params<T> => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType>(null);
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await axi.get<T>(endpoint);
+      setData(response.data);
+      setError(null);
+    } catch (err) {
+      setError(err as AxiosError);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const controller = new AbortController();
-
-    setLoading(true);
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
-          signal: controller.signal,
-          credentials: "include", // Para manejar cookies si usas autenticación
-        });
-
-        if (!response.ok) {
-          throw new Error("Error en la petición");
-        }
-
-        const jsonData: T = await response.json();
-
-        setData(jsonData);
-        setError(null);
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
-
-    return () => {
-      controller.abort();
-    };
   }, [endpoint]);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch: fetchData };
 };

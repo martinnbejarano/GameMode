@@ -1,31 +1,29 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-interface ApexChartState {
+interface WishlistProps {
+  data: {
+    name: string;
+    wishlistCount: number;
+  }[];
+}
+
+interface WishlistState {
   series: number[];
   options: ApexCharts.ApexOptions;
 }
 
-class Wishlist extends React.Component<object, ApexChartState> {
-  constructor(props: object) {
+class Wishlist extends React.Component<WishlistProps, WishlistState> {
+  constructor(props: WishlistProps) {
     super(props);
 
     this.state = {
-      series: [25, 20, 25, 22, 28, 32, 30, 25], // Datos de wishlist de cada FIFA
+      series: props.data.map((game) => game.wishlistCount),
       options: {
         chart: {
           type: "pie",
         },
-        labels: [
-          "FIFA 18",
-          "FIFA 19",
-          "FIFA 20",
-          "FIFA 21",
-          "FIFA 22",
-          "FIFA 23",
-          "FIFA 24",
-          "FIFA 25",
-        ],
+        labels: props.data.map((game) => game.name),
         title: {
           text: "Distribución de Wishlists por Juego",
           align: "center",

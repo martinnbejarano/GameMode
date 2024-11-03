@@ -1,28 +1,67 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import ApexCharts from "apexcharts";
 
-interface ApexChartState {
-  series: { name: string; data: number[] }[];
+interface UserActionsProps {
+  data: {
+    name: string;
+    totalSales: number;
+    views: number;
+    wishlistCount: number;
+  }[];
+}
+
+interface UserActionsState {
+  series: {
+    name: string;
+    data: number[];
+  }[];
   options: ApexCharts.ApexOptions;
 }
 
-class UserActions extends React.Component<object, ApexChartState> {
-  constructor(props: object) {
+class UserActions extends React.Component<UserActionsProps, UserActionsState> {
+  constructor(props: UserActionsProps) {
     super(props);
+
+    const calculatePercentages = (game: {
+      totalSales: number;
+      views: number;
+      wishlistCount: number;
+    }) => {
+      const total = game.views;
+      const purchased = (game.totalSales / total) * 100;
+      const wishlisted = (game.wishlistCount / total) * 100;
+      const noAction = 100 - purchased - wishlisted;
+      return [purchased, wishlisted, noAction];
+    };
+
+    const gameData = props.data.reduce(
+      (acc, game) => {
+        const [purchased, wishlisted, noAction] = calculatePercentages(game);
+        acc.purchased.push(purchased);
+        acc.wishlisted.push(wishlisted);
+        acc.noAction.push(noAction);
+        return acc;
+      },
+      { purchased: [], wishlisted: [], noAction: [] } as Record<
+        string,
+        number[]
+      >
+    );
 
     this.state = {
       series: [
         {
           name: "Comprados",
-          data: [35, 45, 40, 50, 45, 38, 42, 45],
+          data: gameData.purchased,
         },
         {
           name: "Agregados a Wishlist",
-          data: [25, 20, 25, 22, 28, 32, 30, 25],
+          data: gameData.wishlisted,
         },
         {
           name: "Sin Acción",
-          data: [40, 35, 35, 28, 27, 30, 28, 30],
+          data: gameData.noAction,
         },
       ],
       options: {
@@ -52,16 +91,7 @@ class UserActions extends React.Component<object, ApexChartState> {
           colors: ["#fff"],
         },
         xaxis: {
-          categories: [
-            "FIFA 18",
-            "FIFA 19",
-            "FIFA 20",
-            "FIFA 21",
-            "FIFA 22",
-            "FIFA 23",
-            "FIFA 24",
-            "FIFA 25",
-          ],
+          categories: props.data.map((game) => game.name),
         },
         tooltip: {
           y: {

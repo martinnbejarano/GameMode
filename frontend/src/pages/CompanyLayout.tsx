@@ -29,7 +29,7 @@ export const CompanyLayout = () => {
   ];
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen z-10">
       <aside className="fixed flex flex-col items-center gap-4 pt-24 min-h-screen h-full w-16 md:w-56 bg-primaryv1 text-white p-2">
         {links.map(({ to, label, icon: Icon }, index) => (
           <Link

@@ -2,13 +2,24 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 
 // Define el tipo para los datos del estado
-interface ApexChartState {
-  series: { name: string; data: number[] }[];
+interface SalesProps {
+  data: {
+    name: string;
+    totalSales: number;
+  }[];
+}
+
+// Añadir esta interfaz para el estado
+interface SalesState {
+  series: {
+    name: string;
+    data: number[];
+  }[];
   options: ApexCharts.ApexOptions;
 }
 
-class Sales extends React.Component<object, ApexChartState> {
-  constructor(props: object) {
+class Sales extends React.Component<SalesProps, SalesState> {
+  constructor(props: SalesProps) {
     super(props);
 
     const colors = [
@@ -26,7 +37,7 @@ class Sales extends React.Component<object, ApexChartState> {
       series: [
         {
           name: "Ventas",
-          data: [21, 22, 10, 28, 16, 21, 13, 30],
+          data: props.data.map((game) => game.totalSales),
         },
       ],
       options: {
@@ -69,16 +80,7 @@ class Sales extends React.Component<object, ApexChartState> {
           },
         },
         xaxis: {
-          categories: [
-            "FIFA 18",
-            "FIFA 19",
-            "FIFA 20",
-            "FIFA 21",
-            "FIFA 22",
-            "FIFA 23",
-            "FIFA 24",
-            "FIFA 25",
-          ],
+          categories: props.data.map((game) => game.name),
           labels: {
             style: {
               colors: colors,

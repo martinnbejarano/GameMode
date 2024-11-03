@@ -21,10 +21,12 @@ import {
   FaHeart,
   FaStar,
 } from "react-icons/fa";
+import { ClipLoader } from "react-spinners";
 
 export const CompanyGames = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingGameId, setDeletingGameId] = useState<string | null>(null);
 
   const fetchGames = async () => {
     try {
@@ -44,6 +46,7 @@ export const CompanyGames = () => {
 
   const handleDelete = async (gameId: string) => {
     if (confirm("¿Estás seguro de que deseas eliminar este juego?")) {
+      setDeletingGameId(gameId);
       try {
         await axi.delete(`/company/games/${gameId}`);
         toast.success("Juego eliminado exitosamente");
@@ -51,9 +54,19 @@ export const CompanyGames = () => {
       } catch (error) {
         console.error(error);
         toast.error("Error al eliminar el juego");
+      } finally {
+        setDeletingGameId(null);
       }
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <ClipLoader />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -148,6 +161,7 @@ export const CompanyGames = () => {
                   color="danger"
                   aria-label="Eliminar"
                   onClick={() => game._id && handleDelete(game._id)}
+                  isLoading={deletingGameId === game._id}
                 >
                   <MdDelete className="text-xl" />
                 </Button>
