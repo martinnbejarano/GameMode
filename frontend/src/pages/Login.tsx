@@ -15,11 +15,13 @@ export const Login: React.FC = () => {
     type: "user",
   });
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const { data } = await axi.post("/auth/sessions", formData);
       useAuthStore.setState({ user: data });
@@ -28,6 +30,8 @@ export const Login: React.FC = () => {
     } catch (error) {
       console.log(error);
       toast.error("Error al iniciar sesión");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -114,8 +118,13 @@ export const Login: React.FC = () => {
             </label>
           </div>
 
-          <Button className="w-full bg-primaryv2 text-white" type="submit">
-            Iniciar sesión
+          <Button
+            className="w-full bg-primaryv2 text-white"
+            type="submit"
+            isLoading={isLoading}
+            disabled={isLoading}
+          >
+            Iniciar Sesión
           </Button>
           <ForgotPasswordModal />
         </form>

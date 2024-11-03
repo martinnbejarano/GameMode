@@ -7,20 +7,19 @@ import { FileInput } from "../components/FileInput";
 import { Game } from "../interfaces/Game";
 import { SystemRequirementInput } from "../components/SystemRequirementInput";
 import { handleGameFormChange } from "../utils/formHandlers";
-
-const availableGames = [
-  { id: "1", name: "FIFA 18" },
-  { id: "2", name: "FIFA 19" },
-  { id: "3", name: "FIFA 20" },
-];
-
-type FormData = Game;
+import { useFetch } from "../hooks/useFetch";
+import { axi } from "../utils/axiosInstance";
+import { toast } from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
 
 export const EditGames = () => {
+  const { data: gamesResponse, loading } = useFetch<{ data: Game[] }>(
+    "/company/games"
+  );
   const [selectedGame, setSelectedGame] = useState("");
   const [currentImages, setCurrentImages] = useState<string[]>([]);
   const [newImages, setNewImages] = useState<File[]>([]);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<Game>({
     name: "",
     description: "",
     price: 0,
@@ -45,17 +44,16 @@ export const EditGames = () => {
     },
     images: [],
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleGameSelect = (gameId: string) => {
     setSelectedGame(gameId);
-    setCurrentImages([]);
-
-    const selectedGameData = availableGames.find((game) => game.id === gameId);
+    const selectedGameData = gamesResponse?.data.find(
+      (game) => game._id === gameId
+    );
     if (selectedGameData) {
-      setFormData((prev) => ({
-        ...prev,
-        name: selectedGameData.name,
-      }));
+      setFormData(selectedGameData);
+      setCurrentImages((selectedGameData.images || []) as string[]);
     }
   };
 
@@ -65,22 +63,68 @@ export const EditGames = () => {
     handleGameFormChange(e, setFormData);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formDataToSubmit = {
-      ...formData,
-      price: Number(formData.price),
-    };
-    console.log(formDataToSubmit);
+    if (!selectedGame) {
+      toast.error("Por favor selecciona un juego para editar");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const formDataToSubmit = new FormData();
+
+      formDataToSubmit.append("name", formData.name);
+      formDataToSubmit.append("description", formData.description);
+      formDataToSubmit.append("price", String(formData.price));
+      formDataToSubmit.append("category", formData.category);
+
+      formDataToSubmit.append("platforms", JSON.stringify(formData.platforms));
+      formDataToSubmit.append("languages", JSON.stringify(formData.languages));
+
+      formDataToSubmit.append(
+        "minimumSystemRequirements",
+        JSON.stringify(formData.minimumSystemRequirements)
+      );
+      formDataToSubmit.append(
+        "recommendedSystemRequirements",
+        JSON.stringify(formData.recommendedSystemRequirements)
+      );
+
+      newImages.forEach((image) => {
+        formDataToSubmit.append("images", image);
+      });
+
+      await axi.put(`/company/games/${selectedGame}`, formDataToSubmit, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success("Juego actualizado exitosamente");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al actualizar el juego");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleImagesChange = (files: File[]) => {
     setNewImages(files);
     setFormData((prev) => ({
       ...prev,
-      images: [...currentImages, ...files],
+      images: currentImages,
     }));
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <ClipLoader />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
@@ -93,8 +137,8 @@ export const EditGames = () => {
           onChange={(e) => handleGameSelect(e.target.value)}
           className="max-w-md"
         >
-          {availableGames.map((game) => (
-            <SelectItem key={game.id} value={game.id}>
+          {(gamesResponse?.data || []).map((game) => (
+            <SelectItem key={game._id as string} value={game._id as string}>
               {game.name}
             </SelectItem>
           ))}
@@ -129,11 +173,13 @@ export const EditGames = () => {
             <Select
               label="Categoría"
               name="category"
-              value={formData.category}
+              selectedKeys={formData.category ? [formData.category] : []}
               onChange={handleChange}
             >
               {gameCategories.map((category) => (
-                <SelectItem key={category}>{category}</SelectItem>
+                <SelectItem key={category} value={category}>
+                  {category}
+                </SelectItem>
               ))}
             </Select>
           </div>
@@ -143,20 +189,26 @@ export const EditGames = () => {
               label="Plataforma"
               selectionMode="multiple"
               name="platforms"
+              selectedKeys={new Set(formData.platforms)}
               onChange={handleChange}
             >
               {gamePlatforms.map((platform) => (
-                <SelectItem key={platform}>{platform}</SelectItem>
+                <SelectItem key={platform} value={platform}>
+                  {platform}
+                </SelectItem>
               ))}
             </Select>
             <Select
               label="Idioma"
               selectionMode="multiple"
               name="languages"
+              selectedKeys={new Set(formData.languages)}
               onChange={handleChange}
             >
               {languages.map((language) => (
-                <SelectItem key={language}>{language}</SelectItem>
+                <SelectItem key={language} value={language}>
+                  {language}
+                </SelectItem>
               ))}
             </Select>
           </div>
@@ -185,8 +237,9 @@ export const EditGames = () => {
               Cancelar
             </Button>
             <Button
-              className="self-end w-1/3 bg-primaryv2 text-white font-semibold text-lg py-6"
+              className="self-end min-w-1/3 bg-primaryv2 text-white font-semibold text-lg py-6"
               type="submit"
+              isLoading={isSubmitting}
             >
               Guardar cambios
             </Button>

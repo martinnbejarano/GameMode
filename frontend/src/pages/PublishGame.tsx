@@ -19,6 +19,7 @@ export const PublishGame = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormData>(initialGameState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -32,7 +33,7 @@ export const PublishGame = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsSubmitting(true);
     try {
       const formDataToSend = new FormData();
 
@@ -84,6 +85,8 @@ export const PublishGame = () => {
     } catch (error) {
       console.error("Error:", error);
       toast.error("Error al publicar el juego");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -175,6 +178,7 @@ export const PublishGame = () => {
         <Button
           className="self-end w-1/3 bg-primaryv2 text-white font-semibold text-lg py-6"
           type="submit"
+          isLoading={isSubmitting}
         >
           Publicar
         </Button>
