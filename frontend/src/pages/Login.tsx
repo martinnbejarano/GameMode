@@ -3,7 +3,7 @@ import { Input, Button } from "@nextui-org/react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { axi } from "../utils/axiosInstance";
 import { useAuthStore } from "../store/authStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { ForgotPasswordModal } from "../components/ForgotPasswordModal";
 
@@ -22,6 +22,12 @@ export const Login: React.FC = () => {
   ): Promise<void> => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (!formData.email || !formData.password) {
+      toast.error("Todos los campos son requeridos");
+      return;
+    }
+
     try {
       const { data } = await axi.post("/auth/sessions", formData);
       useAuthStore.setState({ user: data });
@@ -41,7 +47,7 @@ export const Login: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-secondaryv1">
-      <section className="flex flex-col items-center gap-12 py-12 px-4 max max-w-[300px] md:max-w-[400px] bg-primaryv1 rounded-md shadow-xl">
+      <section className="flex flex-col items-start gap-12 py-12 px-4 max max-w-[300px] md:max-w-[400px] bg-primaryv1 rounded-md shadow-xl">
         <div className="flex flex-col items-center gap-2">
           <img
             src="public/images/GameModeIcon.webp"
@@ -126,8 +132,16 @@ export const Login: React.FC = () => {
           >
             Iniciar Sesión
           </Button>
-          <ForgotPasswordModal />
         </form>
+        <div className="flex flex-col gap-2">
+          <ForgotPasswordModal />
+          <Link
+            className="text-sm text-white hover:underline cursor-pointer active:text-gray-200"
+            to="/register"
+          >
+            ¿No tienes una cuenta? Registrate
+          </Link>
+        </div>
       </section>
     </div>
   );

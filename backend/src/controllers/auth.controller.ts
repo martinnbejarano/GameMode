@@ -67,6 +67,8 @@ export const register = async (req: Request, res: Response) => {
       await newAccount.save();
       return res.status(201).json({
         _id: newAccount._id,
+        username: newAccount.username,
+        email: newAccount.email,
         type: type,
       });
     }

@@ -37,7 +37,7 @@ export const ForgotPasswordModal = () => {
     <>
       <p
         onClick={onOpen}
-        className="text-start text-sm text-white hover:underline cursor-pointer active:text-gray-200"
+        className="text-sm text-white hover:underline cursor-pointer active:text-gray-200"
       >
         ¿Has olvidado tu contraseña?
       </p>
