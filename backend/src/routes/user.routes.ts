@@ -1,6 +1,7 @@
 import express, { RequestHandler } from "express";
 import { protectRouteUser } from "../middlewares/protectRoute.js";
 import CustomRequest from "../interfaces/CustomRequest.js";
+import { addWishlist } from "../controllers/user.controller.js";
 const router = express.Router();
 
 router.get("/ping", protectRouteUser, (req: CustomRequest, res) => {
@@ -14,3 +15,7 @@ router.get("/ping", protectRouteUser, (req: CustomRequest, res) => {
 });
 
 export default router;
+
+router.post("/add-wishlist", protectRouteUser, addWishlist);
+
+
