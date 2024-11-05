@@ -1,62 +1,26 @@
 import "./HomeSection.css";
 import { useFetch } from "../../Hooks";
-import { Carousel } from "../index";
-import { useEffect } from "react";
+import Carousel from "../Carousel/Carousel";
 import { Game } from "../../interfaces/Game";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { axi } from "../../utils/axiosInstance";
-import { Carousel as ResponsiveCarousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+
 const HomeSection: React.FC = () => {
-  const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Cambiamos el tipo genérico a Game[] directamente
+  const { data, loading, error } = useFetch<Game[]>("/games");
 
-  const fetchGames = async () => {
-    try {
-      const response = await axi.get("/company/games");
-      setGames(response.data);
-    } catch (error) {
-      console.error(error);
-      toast.error("Error al cargar los juegos");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
 
-  useEffect(() => {
-    fetchGames();
-  }, []);
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  // Tomamos los primeros 3 juegos directamente del array data
+  const featuredGames = data?.slice(0, 2) || [];
 
   return (
     <>
-      {loading ? (
-        <div>Cargando...</div>
-      ) : (
-        <ResponsiveCarousel
-          showThumbs={false}
-          infiniteLoop={true}
-          autoPlay={true}
-          interval={3000}
-          showStatus={false}
-        >
-          {games.map((game) => (
-            <div key={game._id}>
-              {game.images && game.images[0] && (
-                <img
-                  src={game.images[0] as string}
-                  alt={game.name}
-                  style={{
-                    height: "400px",
-                    objectFit: "cover",
-                  }}
-                />
-              )}
-            </div>
-          ))}
-        </ResponsiveCarousel>
-      )}
-
+      <Carousel games={featuredGames} />
       <section className="catalogo">
         <div className="catalogo_subtitulo">
           <h2 className="catalogo_subtitulo-h2">No pares de jugar</h2>
@@ -67,23 +31,24 @@ const HomeSection: React.FC = () => {
           </h3>
           <a
             className="btn btn-success mi-btn-catalogo btn-catalogo"
-            href="juegos.html"
+            href="/games"
           >
             Ver Juegos
           </a>
           <img
-            className="catalogo_imagen_fondo_control wow animate__ animate__fadeInUpBig animated"
-            src="..\public\images\pngwing.com.png"
-            alt="Logo Joystick"
-            style={{ visibility: "visible", animationName: "fadeInUpBig" }}
+            className="catalogo_imagen_fondo_control"
+            src="../public/images/pngwing.com.png"
+            alt="control"
           />
         </div>
-        <p className="catalogo_texto">
-          Nadie tiene más contenido para tu consola. Consigue los últimos
-          lanzamientos, taquillazos en exclusiva, pases de temporada, contenido
-          complementario, juegos independientes y mucho más... a precios
-          excelentes.
-        </p>
+        <div>
+          <p className="catalogo_texto">
+            Nadie tiene más contenido para tu consola. Consigue los últimos
+            lanzamientos, taquillazos en exclusiva, pases de temporada,
+            contenido complementario, juegos independientes y mucho más... a
+            precios excelentes.
+          </p>
+        </div>
       </section>
     </>
   );

@@ -1,31 +1,38 @@
+import React from "react";
 import { Carousel as ResponsiveCarousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Game } from "../../interfaces/Game";
+import "./Carousel.css";
 
-/*const data: string[] = [
-  "https://via.placeholder.com/600x400?text=Slide+1",
-  "https://via.placeholder.com/600x400?text=Slide+2",
-  "https://via.placeholder.com/600x400?text=Slide+3",
-];*/
-
-interface CarouselProps<T> {
-  data: T[];
-  loading: boolean;
-  error?: Error;
+interface CarouselProps {
+  games: Game[];
 }
 
-const Carousel = <T,>({ data, loading, error }: CarouselProps<T>) => {
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
-
-  if (error) {
-    return <div>UPS! Hay un error: {error.message}</div>;
-  }
+const Carousel: React.FC<CarouselProps> = ({ games }) => {
   return (
-    <ResponsiveCarousel>
-      {data.map((item, index) => (
-        <div key={index}>
-          <img src={item as string} alt={`Slide ${index}`} />
+    <ResponsiveCarousel
+      showThumbs={false}
+      infiniteLoop={true}
+      autoPlay={true}
+      interval={3000}
+      showStatus={false}
+    >
+      {games.map((game) => (
+        <div key={game._id} className="carousel-slide">
+          <div className="carousel-image-container">
+            {game.images && game.images[0] && (
+              <img
+                src={`../public/images/${game.images[0] as string}`}
+                alt={game.name}
+                className="carousel-image"
+              />
+            )}
+            <div className="carousel-legend">
+              <h3>{game.name}</h3>
+              <p>{game.description}</p>
+              <span className="price">$ {game.price}</span>
+            </div>
+          </div>
         </div>
       ))}
     </ResponsiveCarousel>

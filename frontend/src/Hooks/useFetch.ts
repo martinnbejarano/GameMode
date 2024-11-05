@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { axi } from "../utils/axiosInstance";
 import { AxiosError } from "axios";
 
@@ -17,7 +17,7 @@ export const useFetch = <T>(endpoint: string): Params<T> => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axi.get<T>(endpoint);
@@ -28,11 +28,11 @@ export const useFetch = <T>(endpoint: string): Params<T> => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [endpoint]);
 
   useEffect(() => {
     fetchData();
-  }, [endpoint]);
+  }, [fetchData]);
 
   return { data, loading, error, refetch: fetchData };
 };

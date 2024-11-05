@@ -1,0 +1,44 @@
+.carousel-slide {
+  position: relative;
+  margin-top: 0; /* Asegurarse de que no haya margen adicional */
+}
+
+.carousel-image-container {
+  position: relative;
+}
+
+.carousel-image {
+  height: 400px;
+  object-fit: cover;
+  width: 100%;
+  display: block; /* Asegura que no haya espacio extra debajo de la imagen */
+}
+
+.carousel-legend {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 20px;
+  text-align: left;
+}
+
+.carousel-legend h3 {
+  margin: 0;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.carousel-legend p {
+  margin: 0;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.carousel-legend .price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #4caf50;
+}
