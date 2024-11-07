@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Header.css";
+import { SearchGames } from "../../components/index";
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
   const [showCategories, setShowCategories] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -53,13 +54,7 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          <div className="search-section">
-            <input
-              type="text"
-              placeholder="Buscar juegos..."
-              className="search-input"
-            />
-          </div>
+          <SearchGames />
 
           <div className="controls-section">
             <button
@@ -82,5 +77,3 @@ const Header: React.FC = () => {
     </header>
   );
 };
-
-export default Header;

@@ -1,6 +1,16 @@
-export { default as Footer } from "./Footer/Footer";
-export { default as Header } from "./Header/Header";
-export { default as Layout } from "./Layout/Layout";
-export { default as Carousel } from "./Carousel/Carousel";
-export { default as HomeSection } from "./HomeSection/HomeSection";
-// Exporta aquí otros componentes que tengas en la carpeta components
+export * from "./Carousel/Carousel";
+export * from "./Charts/BaseChartStyles";
+export * from "./Charts/Sales";
+export * from "./Charts/UserActions";
+export * from "./Charts/Views";
+export * from "./Charts/Wishlist";
+export * from "./FileInput";
+export * from "./Footer/Footer";
+export * from "./ForgotPasswordModal";
+export * from "./Header/Header";
+export * from "./HomeSection/HomeSection";
+export * from "./Layout/Layout";
+export * from "./RenderGames/RenderGames";
+export * from "./SearchGames/SearchGames";
+export * from "./Sidebar/Sidebar";
+export * from "./SystemRequirementInput";
