@@ -1,17 +1,21 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Layout } from "./components";
-import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
-import { ResetPassword } from "./pages/ResetPassword";
 import { ProtectedRoutes } from "./utils/ProtectedRoutes";
 import { CompanyLayout } from "./pages/CompanyLayout";
-import { CompanyGames } from "./pages/CompanyGames";
-import { PublishGame } from "./pages/PublishGame";
-import { EditGames } from "./pages/EditGames";
-import { CompanyDashboard } from "./pages/CompanyDashboard";
-import { CompanySales } from "./pages/CompanySales";
-import Home from "./pages/Home";
+import {
+  Login,
+  Register,
+  ResetPassword,
+  CompanyGames,
+  Home,
+  Catalogue,
+  CompanySales,
+  CompanyDashboard,
+  EditGames,
+  PublishGame,
+} from "./pages";
+
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
@@ -35,6 +39,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/company/edit-games" element={<EditGames />} />
             <Route path="/company/sales" element={<CompanySales />} />
           </Route>
+          <Route path="/user/games" element={<Catalogue />} />
         </Route>
       </Route>
     </Routes>

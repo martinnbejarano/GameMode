@@ -1,6 +1,6 @@
 // components/RenderGames/RenderGames.tsx
-import { useFilterContext } from "../../contexts/filter.context";
-import { useFetch } from "../../hooks/useFetch";
+import { useFilterContext } from "../../context";
+import { useFetch } from "../../Hooks";
 import { Game } from "../../interfaces/Game";
 
 export const RenderGames = () => {
@@ -18,7 +18,9 @@ export const RenderGames = () => {
         games &&
         games.map((game) => (
           <div key={game._id} className="game-card">
-            {/* Render game information */}
+            <h2>{game.name}</h2>
+            <p>{game.description}</p>
+            <p>{game.category}</p>
           </div>
         ))
       )}

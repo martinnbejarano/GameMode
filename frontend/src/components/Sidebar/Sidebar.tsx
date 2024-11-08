@@ -1,16 +1,16 @@
 // components/Sidebar/Sidebar.tsx
 import { useFilterContext } from "../../context";
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const { setFilteredUrl } = useFilterContext();
 
   const handleFilterChange = (newFilter: string) => {
-    setFilteredUrl(`/games?filter=${newFilter}`);
+    setFilteredUrl(`/games?category=${newFilter}`);
   };
 
   return (
     <div className="sidebar">
-      <button onClick={() => handleFilterChange("action")}>Action Games</button>
+      <button onClick={() => handleFilterChange("deportes")}>Deportes</button>
       <button onClick={() => handleFilterChange("adventure")}>
         Adventure Games
       </button>
@@ -18,5 +18,3 @@ const Sidebar = () => {
     </div>
   );
 };
-
-export default Sidebar;
