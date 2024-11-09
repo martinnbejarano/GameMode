@@ -8,7 +8,7 @@ const userSchema = new Schema(
     birthday: { type: Date, required: true },
     profilePicture: { type: String, default: null },
     games: [{ type: Schema.Types.ObjectId, ref: "Games", default: [] }],
-    wishlist: [{ type: Schema.Types.ObjectId, ref: "Games", default: [] }],
+    wishlist: [{ type: Schema.Types.ObjectId, ref: "Game" }],
     resetPasswordToken: { type: String, default: null },
   },
   { timestamps: true }

@@ -1,16 +1,17 @@
-import express, { RequestHandler } from "express";
+import express from "express";
 import { protectRouteUser } from "../middlewares/protectRoute.js";
-import CustomRequest from "../interfaces/CustomRequest.js";
+import { 
+  addWishlist, 
+  removeFromWishlist, 
+  getWishlist 
+} from "../controllers/user.controller.js";
+
 const router = express.Router();
 
-router.get("/ping", protectRouteUser, (req: CustomRequest, res) => {
-  if (!req.user) {
-    console.log(req);
-    return res.status(401).send("Usuario no autorizado");
-  }
-  const { _id } = req.user;
-
-  res.json({ id: _id });
-});
+router.post("/wishlist/:id", protectRouteUser, addWishlist);
+router.delete("/wishlist/:id", protectRouteUser, removeFromWishlist);
+router.get("/wishlist", protectRouteUser, getWishlist);
 
 export default router;
+
+
