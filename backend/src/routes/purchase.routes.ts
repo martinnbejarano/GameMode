@@ -1,10 +1,9 @@
-import { Router } from 'express';
-import { createPurchase } from '../controllers/purchase.controller.js'
+import { Router } from "express";
+import { createPurchase } from "../controllers/purchase.controller.js";
 import { protectRouteUser } from "../middlewares/protectRoute.js";
 
 const router = Router();
 
-router.post('/create', protectRouteUser, createPurchase);
+router.post("/:gameId", protectRouteUser, createPurchase);
 
-
-export default router; 
+export default router;

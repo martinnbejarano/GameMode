@@ -1,4 +1,4 @@
-import { Game } from "../models/game.model.js";
+import { Games } from "../models/game.model.js";
 import { Response } from "express";
 import CustomRequest from "../interfaces/CustomRequest.js";
 import { ICompany } from "../interfaces/ICompany.js";
@@ -51,7 +51,7 @@ export const publishGame = async (req: CustomRequest, res: Response) => {
       });
     }
 
-    const game = await Game.create({
+    const game = await Games.create({
       name,
       description,
       price,
@@ -76,7 +76,7 @@ export const getMyGames = async (req: CustomRequest, res: Response) => {
   try {
     const { _id } = req.company as ICompany;
 
-    const games = await Game.find({ companyId: _id });
+    const games = await Games.find({ companyId: _id });
 
     res.status(200).json({
       success: true,
@@ -111,7 +111,7 @@ export const editGame = async (req: CustomRequest, res: Response) => {
       ),
     };
 
-    const updatedGame = await Game.findByIdAndUpdate(
+    const updatedGame = await Games.findByIdAndUpdate(
       gameId,
       { $set: updateData },
       {
@@ -137,7 +137,7 @@ export const getMySales = async (req: CustomRequest, res: Response) => {
   try {
     const { _id } = req.company as ICompany;
 
-    const companyGames = await Game.find({ companyId: _id }, "_id");
+    const companyGames = await Games.find({ companyId: _id }, "_id");
     const gameIds = companyGames.map((game) => game._id);
 
     const sales = await Sale.find({ game: { $in: gameIds } })
@@ -164,7 +164,7 @@ export const getMyGamesStats = async (req: CustomRequest, res: Response) => {
   try {
     const { _id } = req.company as ICompany;
 
-    const games = await Game.find({
+    const games = await Games.find({
       companyId: new mongoose.Types.ObjectId(_id),
     })
       .select("_id name totalSales views wishlistCount price")

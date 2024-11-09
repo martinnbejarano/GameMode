@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IPurchase extends Document {
   game: mongoose.Types.ObjectId;
@@ -17,45 +17,27 @@ export interface IPurchase extends Document {
 const purchaseSchema = new Schema({
   game: {
     type: Schema.Types.ObjectId,
-    ref: 'Game',
-    required: true
+    ref: "Games",
+    required: true,
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: "User",
+    required: true,
   },
   company: {
     type: Schema.Types.ObjectId,
-    ref: 'Company',
-    required: true
+    ref: "Company",
+    required: true,
   },
   price: {
     type: Number,
-    required: true
-  },
-  cardDetails: {
-    number: {
-      type: String,
-      required: true
-    },
-    expiryDate: {
-      type: String,
-      required: true
-    },
-    cvv: {
-      type: String,
-      required: true
-    },
-    holderName: {
-      type: String,
-      required: true
-    }
+    required: true,
   },
   purchaseDate: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-export const Purchase = mongoose.model<IPurchase>('Purchase', purchaseSchema); 
+export const Purchase = mongoose.model<IPurchase>("Purchase", purchaseSchema);
