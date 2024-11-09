@@ -1,9 +1,27 @@
 import { Request, Response } from "express";
 import { Game } from "../models/game.model.js";
 
-export const getGames = async (_req: Request, res: Response) => {
+export const getGames = async (req: Request, res: Response) => {
   try {
-    const games = await Game.find();
+    const { category, minPrice, maxPrice, minRating } = req.query;
+
+    let query: any = {};
+
+    if (category) {
+      query.category = category;
+    }
+
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = Number(minPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
+    }
+
+    if (minRating) {
+      query.averageRating = { $gte: Number(minRating) };
+    }
+    console.log(query);
+    const games = await Game.find(query);
     res.status(200).json(games);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener los juegos" });
