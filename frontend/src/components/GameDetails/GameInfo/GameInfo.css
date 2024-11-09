@@ -1,0 +1,41 @@
+.game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+}
+
+.game-description {
+  line-height: 1.6;
+}
+
+.game-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.game-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.buy-button {
+  background-color: var(--primary-v2);
+  color: white;
+}
+
+.wishlist-button {
+  background-color: #94a3b8;
+  color: white;
+}
+
+.game-details {
+  margin-top: 1rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}

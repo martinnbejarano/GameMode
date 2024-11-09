@@ -1,0 +1,13 @@
+.game-gallery {
+  flex-grow: 1;
+  width: 100%;
+  height: 350px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

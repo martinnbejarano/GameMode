@@ -1,0 +1,39 @@
+.catalogue-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  margin-top: 60px;
+}
+
+.catalogue-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.catalogue-content {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.catalogue-sidebar {
+  width: 25%;
+  min-width: 250px;
+  background-color: #4a4e69;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.catalogue-games {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .catalogue-content {
+    flex-direction: column;
+  }
+
+  .catalogue-sidebar {
+    width: 100%;
+  }
+}

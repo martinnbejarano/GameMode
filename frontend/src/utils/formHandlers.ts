@@ -10,7 +10,7 @@ export const handleGameFormChange = (
   setFormData: React.Dispatch<React.SetStateAction<Game>>,
   fieldName?: string
 ) => {
-  if (fieldName && "size" in e) {
+  if (fieldName && typeof e === "object" && e !== null && "size" in e) {
     const selectedValues = Array.from(e as Set<string>);
     setFormData((prev) => ({
       ...prev,
@@ -19,7 +19,7 @@ export const handleGameFormChange = (
     return;
   }
 
-  if ("target" in e) {
+  if (typeof e === "object" && e !== null && "target" in e) {
     const { name, value } = e.target;
 
     if (name.includes("SystemRequirements")) {

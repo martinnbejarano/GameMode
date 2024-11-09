@@ -1,0 +1,138 @@
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .games-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.game-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+.game-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.game-image-container {
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.game-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.game-card:hover .game-image {
+  transform: scale(1.05);
+}
+
+.game-content {
+  padding: 1rem;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.game-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.game-card:hover .game-title {
+  color: var(--primary-color);
+}
+
+.game-rating {
+  color: #fbbf24;
+  font-size: 0.875rem;
+}
+
+.game-description {
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.game-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-price {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.game-category {
+  font-size: 0.875rem;
+  color: #6b7280;
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-top: 2px solid var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+}
+
+.error-message {
+  text-align: center;
+  color: #ef4444;
+  padding: 2rem 0;
+}
+
+.no-results {
+  text-align: center;
+  color: #6b7280;
+  padding: 2rem 0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

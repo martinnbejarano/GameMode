@@ -1,0 +1,15 @@
+.system-requirements-section {
+  margin: 2rem 0;
+}
+
+.system-requirements-table {
+  border-collapse: collapse;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
