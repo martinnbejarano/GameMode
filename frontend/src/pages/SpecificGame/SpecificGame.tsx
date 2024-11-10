@@ -14,7 +14,9 @@ import "./SpecificGame.css";
 export const SpecificGame = () => {
   const { id } = useParams();
   const { data: game, loading, error } = useFetch<Game>(`/games/${id}`);
-  const { data: reviews } = useFetch<Review[]>(`/games/${id}/reviews`);
+  const { data: reviews } = useFetch<{ success: boolean; data: Review[] }>(
+    `/games/${id}/reviews`
+  );
   console.log(reviews);
   if (loading)
     return (
@@ -62,7 +64,7 @@ export const SpecificGame = () => {
       <div className="mt-8">
         <h3 className="text-2xl font-semibold mb-4">Reseñas</h3>
         <GameReviews
-          reviews={reviews || []}
+          reviews={reviews?.data || []}
           onSubmitReview={handleSubmitReview}
         />
       </div>

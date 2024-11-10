@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Textarea } from "@nextui-org/react";
-import { useAuth } from "../../../context/index";
+import { useAuthStore } from "../../../store/authStore";
 import { Link } from "react-router-dom";
 import { Review } from "../../../interfaces/Review";
 
@@ -15,8 +15,10 @@ interface Props {
 export const GameReviews = ({ reviews, onSubmitReview }: Props) => {
   const [newReview, setNewReview] = useState("");
   const [rating, setRating] = useState(0);
-  const { isAuthenticated, userType, user } = useAuth();
+  const { user } = useAuthStore();
 
+  const isAuthenticated = !!user;
+  const userType = user?.type;
   const canReview = isAuthenticated && userType === "user";
   const defaultAvatar = "../../public/images/profilePic.jpeg";
 
