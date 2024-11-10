@@ -45,23 +45,29 @@ export const GameReviews = ({ reviews, onSubmitReview }: Props) => {
         </div>
       </article>
 
-      {reviews.map((review, index) => (
-        <article key={index} className="review-item">
-          <img src={review.userAvatar} className="user-avatar" />
-          <div>
-            <div className="review-header">
-              <h4 className="user-name">{review.userName}</h4>
-              <div className="review-meta">
-                <span className="review-rating">
-                  {"⭐️".repeat(review.rating)}
-                </span>
-                <span className="review-date">{review.date}</span>
+      {Array.isArray(reviews) && reviews.length > 0 ? (
+        reviews.map((review, index) => (
+          <article key={index} className="review-item">
+            <img src={review.userAvatar} className="user-avatar" />
+            <div>
+              <div className="review-header">
+                <h4 className="user-name">{review.userName}</h4>
+                <div className="review-meta">
+                  <span className="review-rating">
+                    {"⭐️".repeat(review.rating)}
+                  </span>
+                  <span className="review-date">{review.date}</span>
+                </div>
               </div>
+              <p className="review-content">{review.content}</p>
             </div>
-            <p className="review-content">{review.content}</p>
-          </div>
-        </article>
-      ))}
+          </article>
+        ))
+      ) : (
+        <div className="no-reviews">
+          <p>No hay reseñas disponibles para este juego todavía.</p>
+        </div>
+      )}
     </section>
   );
 };

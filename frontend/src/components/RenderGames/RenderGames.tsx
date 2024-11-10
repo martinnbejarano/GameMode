@@ -28,7 +28,7 @@ export const RenderGames = () => {
       </div>
     );
   }
-
+  console.log(games);
   return (
     <div className="games-grid">
       {games.map((game) => (

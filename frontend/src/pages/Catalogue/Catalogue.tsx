@@ -1,6 +1,6 @@
 // pages/Page.tsx
-import { FilterProvider } from "../context/index";
-import { RenderGames, Sidebar } from "../components/index";
+import { FilterProvider } from "../../context/index";
+import { RenderGames, Sidebar } from "../../components/index";
 import "./Catalogue.css";
 
 export const Catalogue = () => {

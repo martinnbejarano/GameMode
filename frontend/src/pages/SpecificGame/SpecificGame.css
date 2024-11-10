@@ -1,7 +1,8 @@
+/* Eliminar la definición de :root y mantener solo los estilos */
 .specific-game-container {
-  margin-top: 60px;
-  padding: 2rem;
-  color: var(--primary-font);
+  background-color: #e0e0d1;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 /* Game Header */
@@ -52,14 +53,16 @@
 
 /* Game Info */
 .game-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 400px;
+  background-color: var(--color-azul);
+  padding: 2rem;
+  border-radius: 8px;
+  color: white;
+  margin-bottom: 2rem;
 }
 
 .game-description {
   line-height: 1.6;
+  color: #ffffff;
 }
 
 .game-price {
@@ -74,7 +77,7 @@
 }
 
 .buy-button {
-  background-color: var(--primary-v2);
+  background-color: var(--color-verde);
   color: white;
 }
 

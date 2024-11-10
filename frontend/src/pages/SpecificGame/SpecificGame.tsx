@@ -1,20 +1,21 @@
 import { useParams } from "react-router-dom";
-import { useFetch } from "../Hooks";
-import { Game } from "../interfaces/Game";
-import { Review } from "../interfaces/Review";
+import { useFetch } from "../../Hooks";
+import { Game } from "../../interfaces/Game";
+import { Review } from "../../interfaces/Review";
 import {
   GameHeader,
   GameGallery,
   GameInfo,
   SystemRequirements,
   GameReviews,
-} from "../components/GameDetails";
-
+} from "../../components/GameDetails";
+import { axi } from "../../utils/axiosInstance";
+import "./SpecificGame.css";
 export const SpecificGame = () => {
   const { id } = useParams();
   const { data: game, loading, error } = useFetch<Game>(`/games/${id}`);
   const { data: reviews } = useFetch<Review[]>(`/games/${id}/reviews`);
-
+  console.log(reviews);
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -31,7 +32,14 @@ export const SpecificGame = () => {
     );
 
   const handleSubmitReview = async (content: string, rating: number) => {
-    // Implementar lógica para enviar review
+    try {
+      await axi.post(`/games/${id}/reviews`, {
+        content,
+        rating,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

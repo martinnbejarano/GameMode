@@ -14,6 +14,8 @@ import {
   CompanyDashboard,
   EditGames,
   PublishGame,
+  About,
+  SpecificGame,
 } from "./pages";
 
 const AppRoutes: React.FC = () => {
@@ -21,10 +23,10 @@ const AppRoutes: React.FC = () => {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        {
-          //        <Route index element={<SpecificGame />} />
-        }{" "}
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/games" element={<Catalogue />} />
+        <Route path="/game/:id" element={<SpecificGame />} />
         <Route path="/register" element={<Register />} />
         <Route path="/reset-password/:id/:token" element={<ResetPassword />} />
         <Route element={<ProtectedRoutes type="company" />}>
@@ -39,7 +41,6 @@ const AppRoutes: React.FC = () => {
             <Route path="/company/edit-games" element={<EditGames />} />
             <Route path="/company/sales" element={<CompanySales />} />
           </Route>
-          <Route path="/games" element={<Catalogue />} />
         </Route>
       </Route>
     </Routes>

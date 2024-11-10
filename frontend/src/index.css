@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-verde: #73c1aa;
+  --color-gris: #dadedc;
+  --color-azul: #4c5c74;
+  --color-azul-claro: #657a85;
+  --color-azul-oscuro: #282848;
+  --color-gris-oscuro: #8c8c8c;
+  --color-verde-oscuro: #5c8474;
+}
+
+body {
+  background-color: #e0e0d1;
+  margin: 0;
+  padding: 0;
+}

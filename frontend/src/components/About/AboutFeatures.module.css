@@ -1,0 +1,39 @@
+.featuresContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 2rem;
+}
+
+.featureCard {
+  flex: 1;
+  text-align: center;
+  padding: 2rem;
+}
+
+.featureIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.featureCard h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.featureCard p {
+  color: #666;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .featuresContainer {
+    flex-direction: column;
+  }
+
+  .featureCard {
+    margin-bottom: 2rem;
+  }
+}
