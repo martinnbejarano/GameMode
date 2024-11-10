@@ -16,6 +16,7 @@ import {
   PublishGame,
   About,
   SpecificGame,
+  Consoles,
 } from "./pages";
 
 const AppRoutes: React.FC = () => {
@@ -42,6 +43,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/company/sales" element={<CompanySales />} />
           </Route>
         </Route>
+        <Route path="/consoles" element={<Consoles />} />
       </Route>
     </Routes>
   );

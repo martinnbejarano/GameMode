@@ -1,0 +1,57 @@
+.consola_contenedor-consolas {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.consola_contenedor-consolas_text {
+  font-size: 20px;
+  width: auto;
+}
+
+.consola_contenedor-consolas_text-titulo {
+  text-align: center;
+  padding: 5px;
+}
+
+.consola_contenedor-consolas_text-p {
+  text-align: center;
+  padding: 10px;
+}
+
+.consola_contenedor-consolas_imagen {
+  width: auto;
+}
+
+.consola_contenedor-consolas_imagen-marcas {
+  object-fit: cover;
+  flex-basis: auto;
+  height: auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .consola_contenedor-consolas {
+    flex-direction: row;
+  }
+
+  .consola_contenedor-consolas.reverse {
+    flex-direction: row-reverse;
+  }
+
+  .consola_contenedor-consolas_text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    padding: 20px;
+  }
+
+  .consola_contenedor-consolas_imagen {
+    width: 50%;
+    padding: 20px;
+    display: flex;
+  }
+}

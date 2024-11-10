@@ -11,3 +11,4 @@ export * from "./PublishGame";
 export * from "./Register";
 export * from "./ResetPassword";
 export * from "./SpecificGame/SpecificGame";
+export { default as Consoles } from "./Consoles/Consoles";

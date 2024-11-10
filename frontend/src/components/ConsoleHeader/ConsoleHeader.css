@@ -1,0 +1,16 @@
+.consola-contenedor {
+  display: flex;
+  flex-direction: column;
+}
+
+.consola-contenedor_texto {
+  text-align: center;
+}
+
+.consola-contenedor_texto_h1 {
+  margin-bottom: revert;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+/* ... resto del CSS sin cambios ... */

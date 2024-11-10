@@ -1,0 +1,24 @@
+.consola-contenedor {
+  display: flex;
+  flex-direction: column;
+}
+
+.consola-contenedor_texto {
+  text-align: center;
+}
+
+.consola-contenedor_texto_h1 {
+  margin-bottom: revert;
+}
+
+.consola-contenedor_img {
+  position: relative;
+  z-index: 0;
+  height: auto;
+  width: auto;
+}
+
+.consola-contenedor_img_controles {
+  height: auto;
+  width: 100%;
+}

@@ -1,0 +1,26 @@
+.consola_contenedor-consolas {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.consola_contenedor-consolas_text {
+  font-size: 20px;
+  width: auto;
+}
+
+.consola_contenedor-consolas_text-titulo {
+  text-align: center;
+  padding: 5px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.consola_contenedor-consolas_text-p {
+  text-align: center;
+  padding: 10px;
+}
+
+/* ... resto del CSS sin cambios ... */

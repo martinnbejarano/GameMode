@@ -1,10 +1,13 @@
 export interface Review {
-  _id?: string;
-  userId: string;
-  userName: string;
-  userAvatar: string;
-  gameId: string;
-  rating: number;
+  _id: string;
+  user: {
+    _id: string;
+    username: string;
+    profilePicture?: string;
+  };
+  game: string;
   content: string;
-  date: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
 }
