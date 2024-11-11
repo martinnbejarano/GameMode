@@ -6,6 +6,7 @@ import { axi } from "../../../utils/axiosInstance";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { PurchaseModal } from "../../PurchaseModal/PurchaseModal";
+import { useWishlistStore } from "../../../store/wishlistStore";
 
 interface Props {
   game: Game;
@@ -16,6 +17,7 @@ export const GameInfo = ({ game }: Props) => {
   const [loading, setLoading] = useState(false);
   const [hasGame, setHasGame] = useState(false);
   const { user } = useAuthStore();
+  const { addToWishlist, removeFromWishlist } = useWishlistStore();
 
   useEffect(() => {
     const checkUserGame = async () => {
@@ -59,9 +61,11 @@ export const GameInfo = ({ game }: Props) => {
     try {
       if (isInWishlist) {
         await axi.delete(`/users/wishlist/${game._id}`);
+        removeFromWishlist(game._id);
         toast.success("Juego eliminado de la lista de deseos");
       } else {
         await axi.post(`/users/wishlist/${game._id}`);
+        addToWishlist(game);
         toast.success("Juego agregado a la lista de deseos");
       }
       setIsInWishlist(!isInWishlist);
@@ -101,7 +105,7 @@ export const GameInfo = ({ game }: Props) => {
             Ya tienes este juego
           </Button>
         ) : (
-          <PurchaseModal gameId={game._id} price={game.price} />
+          <PurchaseModal gameId={game._id || ""} price={game.price} />
         )}
         {user ? (
           <Button
@@ -127,7 +131,7 @@ export const GameInfo = ({ game }: Props) => {
       <div className="space-y-2">
         <div className="flex justify-between py-2 border-b border-gray-600">
           <span>Desarrolladora</span>
-          <span>{getCompanyName(game.companyId)}</span>
+          <span>{getCompanyName(game.companyId as string)}</span>
         </div>
         <div className="flex justify-between py-2 border-b border-gray-600">
           <span>Fecha de lanzamiento</span>

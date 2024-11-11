@@ -1,7 +1,7 @@
 import AboutHero from "../components/About/AboutHero";
 import AboutFeatures from "../components/About/AboutFeatures";
 
-const About = () => {
+export const About = () => {
   return (
     <section id="nosotros">
       <AboutHero />
@@ -9,5 +9,3 @@ const About = () => {
     </section>
   );
 };
-
-export default About;

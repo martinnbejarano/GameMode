@@ -1,0 +1,103 @@
+.wishlist-section {
+  background-color: var(--color-azul);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.wishlist-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .wishlist-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .wishlist-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.wishlist-card {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.wishlist-game-image {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.wishlist-game-info {
+  color: white;
+}
+
+.wishlist-game-title {
+  font-weight: 600;
+  color: black;
+}
+
+.wishlist-game-price {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: black;
+}
+
+.wishlist-game-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buy-button {
+  flex: 1;
+  background-color: var(--color-verde) !important;
+  color: white;
+}
+
+.remove-button {
+  flex: 1;
+  background-color: rgb(239 68 68) !important;
+  color: white;
+}
+
+.empty-wishlist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  min-height: 200px;
+}
+
+.empty-wishlist-text {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.empty-wishlist-subtext {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+}

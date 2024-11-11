@@ -2,6 +2,7 @@ import React from "react";
 import { Carousel as ResponsiveCarousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Game } from "../../interfaces/Game";
+import { Link } from "react-router-dom";
 import "./Carousel.css";
 
 interface CarouselProps {
@@ -30,7 +31,12 @@ const Carousel: React.FC<CarouselProps> = ({ games }) => {
             <div className="carousel-legend">
               <h3>{game.name}</h3>
               <p>{game.description}</p>
-              <span className="price">$ {game.price}</span>
+              <div className="carousel-legend-footer">
+                <Link to={`/game/${game._id}`} className="carousel-button">
+                  Ver juego
+                </Link>
+                <span className="price">$ {game.price}</span>
+              </div>
             </div>
           </div>
         </div>

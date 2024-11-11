@@ -17,6 +17,7 @@ import {
   About,
   SpecificGame,
   Consoles,
+  UserProfile,
 } from "./pages";
 
 const AppRoutes: React.FC = () => {
@@ -33,6 +34,7 @@ const AppRoutes: React.FC = () => {
 
         {/* Rutas protegidas para usuarios */}
         <Route element={<ProtectedRoutes type="user" />}>
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/game/:id/review" element={<SpecificGame />} />
         </Route>
 

@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { SearchGames } from "../../components/index";
 import { useAuthStore } from "../../store/authStore";
-import { useCardToggle } from "../../hooks/useCardToggle";
+import { useCardToggle } from "../../Hooks/useCardToggle";
 import { CiLogout, CiLogin } from "react-icons/ci";
 import { FaUserPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useWishlistStore } from "../../store/wishlistStore";
+import { axi } from "../../utils/axiosInstance";
+import { Game } from "../../interfaces/Game";
 
 export const Header: React.FC = () => {
   const [showCategories, setShowCategories] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cardRef, isOpen, setIsOpen } = useCardToggle();
   const { user, logout } = useAuthStore();
+  const { wishlist, setWishlist } = useWishlistStore();
 
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      if (!user) {
+        setWishlist([]);
+        return;
+      }
+      try {
+        const response = await axi.get<{ data: Game[] }>("/users/wishlist");
+        setWishlist(response.data.data);
+      } catch (error) {
+        console.error("Error al cargar la wishlist:", error);
+      }
+    };
+
+    fetchWishlist();
+  }, [user, setWishlist]);
+
+  console.log(wishlist);
   return (
     <header className="header">
       <nav className="navbar">
@@ -90,12 +113,24 @@ export const Header: React.FC = () => {
                 {user ? (
                   <>
                     <div className="px-4 py-3 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900">
-                        {user.username || "Usuario"}
-                      </p>
-                      <p className="text-sm text-gray-500 truncate">
-                        {user.email}
-                      </p>
+                      <Link
+                        to="/profile"
+                        className="flex items-center justify-between"
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {user.username || "Usuario"}
+                          </p>
+                          <p className="text-sm text-gray-500 truncate">
+                            {user.email}
+                          </p>
+                        </div>
+                        {wishlist.length > 0 && (
+                          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                            {wishlist.length}
+                          </span>
+                        )}
+                      </Link>
                     </div>
                     <button
                       onClick={logout}

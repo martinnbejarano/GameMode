@@ -36,7 +36,7 @@ const consolesData = [
   },
 ];
 
-const Consoles: React.FC = () => {
+export const Consoles: React.FC = () => {
   return (
     <section id="consola">
       <ConsoleHeader />
@@ -52,5 +52,3 @@ const Consoles: React.FC = () => {
     </section>
   );
 };
-
-export default Consoles;

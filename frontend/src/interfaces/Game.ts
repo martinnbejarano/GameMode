@@ -8,7 +8,7 @@ export interface SystemRequirements {
 }
 
 export interface Game {
-  _id: string;
+  _id?: string;
   name: string;
   description: string;
   price: number;
@@ -16,8 +16,8 @@ export interface Game {
   platforms: string[];
   languages: string[];
   images: string[];
-  createdAt: Date;
-  companyId:
+  createdAt?: Date;
+  companyId?:
     | string
     | {
         _id: string;

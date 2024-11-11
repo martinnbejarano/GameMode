@@ -1,6 +1,6 @@
 .carousel-slide {
   position: relative;
-  margin-top: 0; /* Asegurarse de que no haya margen adicional */
+  margin-top: 0;
 }
 
 .carousel-image-container {
@@ -11,7 +11,7 @@
   height: 400px;
   object-fit: cover;
   width: 100%;
-  display: block; /* Asegura que no haya espacio extra debajo de la imagen */
+  display: block;
 }
 
 .carousel-legend {
@@ -34,11 +34,37 @@
 .carousel-legend p {
   margin: 0;
   font-size: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  color: #9ca3af;
+}
+
+.carousel-legend-footer {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .carousel-legend .price {
   font-size: 20px;
   font-weight: bold;
-  color: #4caf50;
+  color: #ffffff;
+}
+
+.carousel-button {
+  background-color: var(--color-azul);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--color-verde);
+  border-radius: 0.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.carousel-button:hover {
+  background-color: var(--color-verde);
+  transform: translateY(-2px);
 }

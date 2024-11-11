@@ -71,7 +71,7 @@ export const SearchGames = () => {
               onClick={() => game._id && handleGameClick(game._id)}
             >
               <img
-                src={typeof game.images[0] === "string" ? game.images[0] : ""}
+                src={game.images[0] ? `/public/images/${game.images[0]}` : ""}
                 alt={game.name}
                 className="search-result-image"
               />
