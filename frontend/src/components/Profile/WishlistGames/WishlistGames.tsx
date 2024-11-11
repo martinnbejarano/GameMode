@@ -1,24 +1,30 @@
 import { Button } from "@nextui-org/react";
 import { Game } from "../../../interfaces/Game";
 import "./WishlistGames.css";
+import "../shared-styles.css";
 
 interface Props {
   games: Game[];
-  onBuy: (gameId: string) => void;
+  onAddToCart: (gameId: string) => void;
   onRemove: (gameId: string) => void;
   loading: boolean;
 }
 
-export const WishlistGames = ({ games, onBuy, onRemove, loading }: Props) => {
+export const WishlistGames = ({
+  games,
+  onAddToCart,
+  onRemove,
+  loading,
+}: Props) => {
   return (
     <section className="wishlist-section">
       <h3 className="wishlist-title">Lista de deseos</h3>
       {games.length === 0 ? (
-        <div className="empty-wishlist">
-          <p className="empty-wishlist-text">
+        <div className="empty-section">
+          <p className="empty-section-text">
             No tienes juegos en tu lista de deseos.
           </p>
-          <p className="empty-wishlist-subtext">
+          <p className="empty-section-subtext">
             ¡Explora nuestro catálogo y agrega los juegos que te interesen!
           </p>
         </div>
@@ -37,10 +43,10 @@ export const WishlistGames = ({ games, onBuy, onRemove, loading }: Props) => {
               </div>
               <div className="wishlist-game-actions">
                 <Button
-                  className="buy-button"
-                  onClick={() => onBuy(game._id as string)}
+                  className="cart-button"
+                  onClick={() => onAddToCart(game._id as string)}
                 >
-                  Comprar
+                  Agregar al carrito
                 </Button>
                 <Button
                   className="remove-button"

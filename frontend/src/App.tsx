@@ -1,16 +1,15 @@
 import { BrowserRouter } from "react-router-dom";
-import AppRoutes from "./routes";
-import { NextUIProvider } from "@nextui-org/react";
+import { AppRoutes } from "./routes";
+import { Header } from "./components/index";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
 
 function App() {
   return (
     <BrowserRouter>
-      <NextUIProvider>
-        <AppRoutes />
-        <Toaster />
-      </NextUIProvider>
+      <Header />
+      <AppRoutes />
+      <Toaster position="top-right" />
     </BrowserRouter>
   );
 }

@@ -20,7 +20,7 @@ import {
   UserProfile,
 } from "./pages";
 
-const AppRoutes: React.FC = () => {
+export const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -58,5 +58,3 @@ const AppRoutes: React.FC = () => {
     </Routes>
   );
 };
-
-export default AppRoutes;

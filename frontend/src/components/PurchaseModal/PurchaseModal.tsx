@@ -32,12 +32,13 @@ export const PurchaseModal = ({ gameId, price, onSuccess }: Props) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axi.post(`/purchases/${gameId}`);
-      if (response.status === 200) {
-        toast.success("¡Compra realizada con éxito!");
-        onSuccess?.();
-        onOpenChange();
+      const gameIds = gameId.split(",");
+      for (const id of gameIds) {
+        await axi.post(`/purchases/${id}`);
       }
+      toast.success("¡Compra realizada con éxito!");
+      onSuccess?.();
+      onOpenChange();
     } catch (error) {
       toast.error("Error al procesar la compra: " + (error as Error).message);
     } finally {
@@ -115,7 +116,7 @@ export const PurchaseModal = ({ gameId, price, onSuccess }: Props) => {
                     type="submit"
                     isLoading={loading}
                   >
-                    Confirmar compra
+                    Confirmar compra (${price} USD)
                   </Button>
                 </ModalFooter>
               </form>

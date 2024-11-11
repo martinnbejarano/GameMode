@@ -1,12 +1,12 @@
 // components/RenderGames/RenderGames.tsx
-import { useFilterContext } from "../../context";
+import { useFilterStore } from "../../store/filterStore";
 import { useFetch } from "../../Hooks";
 import { Game } from "../../interfaces/Game";
 import { Link } from "react-router-dom";
 import "./RenderGames.css";
 
 export const RenderGames = () => {
-  const { filteredUrl } = useFilterContext();
+  const { filteredUrl } = useFilterStore();
   const { data: games, loading, error } = useFetch<Game[]>(filteredUrl);
 
   if (loading) {
@@ -28,7 +28,7 @@ export const RenderGames = () => {
       </div>
     );
   }
-  console.log(games);
+
   return (
     <div className="games-grid">
       {games.map((game) => (

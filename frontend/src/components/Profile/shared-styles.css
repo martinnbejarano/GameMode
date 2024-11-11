@@ -1,0 +1,20 @@
+.empty-section {
+  text-align: center;
+  padding: 2rem;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.empty-section-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.empty-section-subtext {
+  font-size: 1rem;
+  color: #94a3b8;
+}

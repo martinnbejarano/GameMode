@@ -4,9 +4,9 @@ import { useAuthStore } from "../../../store/authStore";
 import { Game } from "../../../interfaces/Game";
 import { axi } from "../../../utils/axiosInstance";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
-import { PurchaseModal } from "../../PurchaseModal/PurchaseModal";
+import { Link, useNavigate } from "react-router-dom";
 import { useWishlistStore } from "../../../store/wishlistStore";
+import { useCartStore } from "../../../store/cartStore";
 
 interface Props {
   game: Game;
@@ -18,6 +18,8 @@ export const GameInfo = ({ game }: Props) => {
   const [hasGame, setHasGame] = useState(false);
   const { user } = useAuthStore();
   const { addToWishlist, removeFromWishlist } = useWishlistStore();
+  const navigate = useNavigate();
+  const { incrementCartCount } = useCartStore();
 
   useEffect(() => {
     const checkUserGame = async () => {
@@ -61,7 +63,7 @@ export const GameInfo = ({ game }: Props) => {
     try {
       if (isInWishlist) {
         await axi.delete(`/users/wishlist/${game._id}`);
-        removeFromWishlist(game._id);
+        removeFromWishlist(game._id as string);
         toast.success("Juego eliminado de la lista de deseos");
       } else {
         await axi.post(`/users/wishlist/${game._id}`);
@@ -71,6 +73,25 @@ export const GameInfo = ({ game }: Props) => {
       setIsInWishlist(!isInWishlist);
     } catch (error) {
       toast.error((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      toast.error("Debes iniciar sesión para agregar al carrito");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await axi.post(`/users/cart/${game._id}`);
+      incrementCartCount();
+      toast.success("Juego agregado al carrito");
+      navigate("/profile");
+    } catch (error) {
+      toast.error("Error al agregar el juego al carrito");
     } finally {
       setLoading(false);
     }
@@ -105,7 +126,13 @@ export const GameInfo = ({ game }: Props) => {
             Ya tienes este juego
           </Button>
         ) : (
-          <PurchaseModal gameId={game._id || ""} price={game.price} />
+          <Button
+            className="cart-button"
+            onClick={handleAddToCart}
+            isLoading={loading}
+          >
+            Agregar al carrito
+          </Button>
         )}
         {user ? (
           <Button

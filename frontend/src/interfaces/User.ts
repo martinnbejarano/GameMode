@@ -6,5 +6,6 @@ export interface User {
   profilePicture?: string | null;
   games?: string[];
   wishlist?: string[];
+  cart?: string[];
   type?: "user" | "company";
 }

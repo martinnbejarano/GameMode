@@ -5,79 +5,109 @@ import { useAuthStore } from "../../store/authStore";
 import { useCardToggle } from "../../Hooks/useCardToggle";
 import { CiLogout, CiLogin } from "react-icons/ci";
 import { FaUserPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { useWishlistStore } from "../../store/wishlistStore";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { axi } from "../../utils/axiosInstance";
 import { Game } from "../../interfaces/Game";
+import { useFilterStore } from "../../store/filterStore";
+import { useCartStore } from "../../store/cartStore";
 
 export const Header: React.FC = () => {
   const [showCategories, setShowCategories] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cardRef, isOpen, setIsOpen } = useCardToggle();
   const { user, logout } = useAuthStore();
-  const { wishlist, setWishlist } = useWishlistStore();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { setFilteredUrl, setSelectedCategory } = useFilterStore();
+  const { cartCount, setCartCount } = useCartStore();
+
+  const fetchCartCount = async () => {
+    if (!user) {
+      setCartCount(0);
+      return;
+    }
+    try {
+      const response = await axi.get("/users/cart");
+      setCartCount(response.data.data.length);
+    } catch (error) {
+      console.error("Error al obtener el carrito:", error);
+      setCartCount(0);
+    }
+  };
 
   useEffect(() => {
-    const fetchWishlist = async () => {
-      if (!user) {
-        setWishlist([]);
-        return;
-      }
-      try {
-        const response = await axi.get<{ data: Game[] }>("/users/wishlist");
-        setWishlist(response.data.data);
-      } catch (error) {
-        console.error("Error al cargar la wishlist:", error);
-      }
-    };
+    fetchCartCount();
+  }, [user, location.pathname]);
 
-    fetchWishlist();
-  }, [user, setWishlist]);
+  const handleCategoryClick = async (category: string) => {
+    const params = new URLSearchParams();
+    params.append("category", category);
+    const newUrl = `/games?${params.toString()}`;
 
-  console.log(wishlist);
+    setSelectedCategory(category);
+    setFilteredUrl(newUrl);
+    setShowCategories(false);
+
+    navigate("/games");
+  };
+
   return (
-    <header className="header">
+    <header className="header bg-primaryv1">
       <nav className="navbar">
         <div className="grid-container">
           <div className="logo-section">
-            <a href="/">
+            <Link to="/">
               <img
                 src="https://play-lh.googleusercontent.com/1cg3eQALpEpYC-eNdus-u_ORVT7qh68YQrz9ClucjRjriAiT_kZXLbAMnuUCw7MDCmLy=s360-rw"
                 alt="Logo de GameMode"
               />
-            </a>
+            </Link>
           </div>
 
           <div className="nav-section">
             <div className={`nav-content ${isMenuOpen ? "active" : ""}`}>
               <ul className="nav-links">
                 <li>
-                  <a href="/">Inicio</a>
+                  <Link to="/">Inicio</Link>
                 </li>
                 <li className="dropdown">
-                  <a
-                    href="#"
+                  <button
                     onClick={() => setShowCategories(!showCategories)}
+                    className="text-white bg-transparent border-none cursor-pointer"
                   >
                     Categorías ▼
-                  </a>
+                  </button>
                   {showCategories && (
                     <div className="dropdown-content">
-                      <a href="#">Acción</a>
-                      <a href="#">Aventura</a>
-                      <a href="#">Estrategia</a>
-                      <a href="#">Deportes</a>
+                      <button onClick={() => handleCategoryClick("RPG")}>
+                        RPG
+                      </button>
+                      <button onClick={() => handleCategoryClick("Acción")}>
+                        Acción
+                      </button>
+                      <button onClick={() => handleCategoryClick("Aventura")}>
+                        Aventura
+                      </button>
+                      <button onClick={() => handleCategoryClick("Deportes")}>
+                        Deportes
+                      </button>
+                      <button onClick={() => handleCategoryClick("Estrategia")}>
+                        Estrategia
+                      </button>
+                      <button onClick={() => handleCategoryClick("Simulación")}>
+                        Simulación
+                      </button>
+                      <button onClick={() => handleCategoryClick("Carreras")}>
+                        Carreras
+                      </button>
                     </div>
                   )}
                 </li>
                 <li>
-                  <a href="#">Plataforma</a>
+                  <Link to="/consoles">Plataforma</Link>
                 </li>
                 <li>
-                  <a href="#">Nosotros</a>
-                </li>
-                <li>
-                  <a href="#">Contacto</a>
+                  <Link to="/about">Nosotros</Link>
                 </li>
               </ul>
             </div>
@@ -125,9 +155,9 @@ export const Header: React.FC = () => {
                             {user.email}
                           </p>
                         </div>
-                        {wishlist.length > 0 && (
+                        {cartCount > 0 && (
                           <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                            {wishlist.length}
+                            {cartCount}
                           </span>
                         )}
                       </Link>
@@ -163,6 +193,7 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </nav>
+      {cartCount > 0 && <span className="notification-badge">{cartCount}</span>}
     </header>
   );
 };

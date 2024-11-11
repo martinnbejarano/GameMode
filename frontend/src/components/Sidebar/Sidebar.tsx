@@ -1,15 +1,15 @@
 // components/Sidebar/Sidebar.tsx
-import { useFilterContext } from "../../context";
+import { useFilterStore } from "../../store/filterStore";
 import { Slider } from "@nextui-org/react";
 import { gameCategories } from "../../constants/gameCategories";
 import { useState } from "react";
 import "./Sidebar.css";
 
 export const Sidebar = () => {
-  const { setFilteredUrl } = useFilterContext();
+  const { setFilteredUrl, selectedCategory, setSelectedCategory } =
+    useFilterStore();
   const [priceRange, setPriceRange] = useState([0, 100]);
   const [rating, setRating] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleFilterChange = (
     newCategory?: string | null,
