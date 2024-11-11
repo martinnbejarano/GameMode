@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import "./Header.css";
 import { SearchGames } from "../../components/index";
+import { useAuthStore } from "../../store/authStore";
+import { useCardToggle } from "../../hooks/useCardToggle";
+import { CiLogout, CiLogin } from "react-icons/ci";
+import { FaUserPlus } from "react-icons/fa";
 
 export const Header: React.FC = () => {
   const [showCategories, setShowCategories] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cardRef, isOpen, setIsOpen } = useCardToggle();
+  const { user, logout } = useAuthStore();
 
   return (
     <header className="header">
@@ -65,11 +71,55 @@ export const Header: React.FC = () => {
               <span></span>
               <span></span>
             </button>
-            <div className="user-icon">
+            <div className="relative">
               <img
                 src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 alt="Usuario"
+                className="size-12 md:size-14 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => setIsOpen(!isOpen)}
               />
+              <div
+                ref={cardRef}
+                className={`absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl transform transition-transform origin-top-right border border-gray-100
+                  ${isOpen ? "scale-100" : "scale-0"}`}
+              >
+                {user ? (
+                  <>
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <p className="text-sm font-medium text-gray-900">
+                        {user.username || "Usuario"}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                    <button
+                      onClick={logout}
+                      className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <CiLogout className="text-lg text-gray-500" />
+                      <span>Cerrar sesión</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      href="/login"
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <CiLogin className="text-lg text-gray-500" />
+                      <span>Iniciar sesión</span>
+                    </a>
+                    <a
+                      href="/register"
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-t border-gray-100"
+                    >
+                      <FaUserPlus className="text-lg text-gray-500" />
+                      <span>Registrarse</span>
+                    </a>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
