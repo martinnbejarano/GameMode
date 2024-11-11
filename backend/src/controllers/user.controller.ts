@@ -225,3 +225,141 @@ export const getMyGames = async (req: CustomRequest, res: Response) => {
     });
   }
 };
+
+export const addToCart = async (req: CustomRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "No autorizado" });
+    }
+
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const game = await Games.findById(id);
+    if (!game) {
+      return res.status(404).json({ message: "Juego no encontrado" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if (user.cart.includes(new Types.ObjectId(id))) {
+      return res
+        .status(400)
+        .json({ message: "El juego ya está en el carrito" });
+    }
+
+    user.cart.push(new Types.ObjectId(id));
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Juego agregado al carrito",
+      cart: user.cart,
+    });
+  } catch (error) {
+    console.error("Error en addToCart:", error);
+    res.status(500).json({
+      message: "Error al agregar el juego al carrito",
+      error: error instanceof Error ? error.message : "Error desconocido",
+    });
+  }
+};
+
+export const removeFromCart = async (req: CustomRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "No autorizado" });
+    }
+
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    user.cart = user.cart.filter((gameId) => !gameId.equals(id));
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Juego eliminado del carrito",
+      cart: user.cart,
+    });
+  } catch (error) {
+    console.error("Error en removeFromCart:", error);
+    res.status(500).json({
+      message: "Error al eliminar el juego del carrito",
+      error: error instanceof Error ? error.message : "Error desconocido",
+    });
+  }
+};
+
+export const getCart = async (req: CustomRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "No autorizado" });
+    }
+
+    const user = await User.findById(req.user._id).populate({
+      path: "cart",
+      select: "name price images category platforms",
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user.cart,
+    });
+  } catch (error) {
+    console.error("Error en getCart:", error);
+    res.status(500).json({
+      message: "Error al obtener el carrito",
+      error: error instanceof Error ? error.message : "Error desconocido",
+    });
+  }
+};
+
+export const removeFromGames = async (req: CustomRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "No autorizado" });
+    }
+
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if (!user.games.includes(new Types.ObjectId(id))) {
+      return res
+        .status(400)
+        .json({ message: "No tienes este juego en tu biblioteca" });
+    }
+
+    user.games = user.games.filter((gameId) => !gameId.equals(id));
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Juego eliminado de tu biblioteca",
+      games: user.games,
+    });
+  } catch (error) {
+    console.error("Error en removeFromGames:", error);
+    res.status(500).json({
+      message: "Error al eliminar el juego de tu biblioteca",
+      error: error instanceof Error ? error.message : "Error desconocido",
+    });
+  }
+};

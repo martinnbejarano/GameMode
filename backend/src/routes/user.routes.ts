@@ -6,6 +6,10 @@ import {
   getWishlist,
   addReview,
   getMyGames,
+  addToCart,
+  removeFromCart,
+  getCart,
+  removeFromGames,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -15,4 +19,8 @@ router.delete("/wishlist/:id", protectRouteUser, removeFromWishlist);
 router.get("/wishlist", protectRouteUser, getWishlist);
 router.post("/reviews/:gameId", protectRouteUser, addReview);
 router.get("/games", protectRouteUser, getMyGames);
+router.post("/cart/:id", protectRouteUser, addToCart);
+router.delete("/cart/:id", protectRouteUser, removeFromCart);
+router.get("/cart", protectRouteUser, getCart);
+router.delete("/games/:id", protectRouteUser, removeFromGames);
 export default router;

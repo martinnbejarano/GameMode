@@ -9,6 +9,7 @@ const userSchema = new Schema(
     profilePicture: { type: String, default: null },
     games: [{ type: Schema.Types.ObjectId, ref: "Games", default: [] }],
     wishlist: [{ type: Schema.Types.ObjectId, ref: "Games" }],
+    cart: [{ type: Schema.Types.ObjectId, ref: "Games" }],
     resetPasswordToken: { type: String, default: null },
   },
   { timestamps: true }
