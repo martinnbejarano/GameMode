@@ -6,12 +6,14 @@ export interface FileWithPreview {
   isExisting: boolean;
   error?: boolean;
   status?: "pending" | "uploading" | "complete" | "error";
+  size?: number;
 }
 
 export type FileInputAction =
   | { type: "ADD_FILES"; payload: FileWithPreview[] }
   | { type: "REMOVE_FILE"; payload: number }
-  | { type: "CLEAR_ALL" };
+  | { type: "CLEAR_ALL" }
+  | { type: "SET_FILES"; payload: FileWithPreview[] };
 
 export const fileInputReducer = (
   state: FileWithPreview[],
@@ -30,6 +32,9 @@ export const fileInputReducer = (
     }
     case "CLEAR_ALL": {
       return [];
+    }
+    case "SET_FILES": {
+      return action.payload;
     }
     default:
       return state;

@@ -7,7 +7,7 @@ import { FileInput } from "../components/FileInput";
 import { Game } from "../interfaces/Game";
 import { SystemRequirementInput } from "../components/SystemRequirementInput";
 import { handleGameFormChange } from "../utils/formHandlers";
-import { useFetch } from "../hooks/useFetch";
+import { useFetch } from "../Hooks/useFetch";
 import { axi } from "../utils/axiosInstance";
 import { toast } from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
@@ -102,6 +102,7 @@ export const EditGames = () => {
       });
 
       toast.success("Juego actualizado exitosamente");
+      window.location.reload();
     } catch (error) {
       console.error(error);
       toast.error("Error al actualizar el juego");

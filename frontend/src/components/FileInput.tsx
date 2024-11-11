@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   useReducer,
   useState,
@@ -10,7 +11,6 @@ import { MdUpload, MdDelete } from "react-icons/md";
 import {
   fileInputReducer,
   type FileWithPreview,
-  type FileInputAction,
 } from "../reducers/fileInputReducer";
 
 interface FileInputProps {
@@ -22,14 +22,69 @@ const FileInput = ({ initialImages = [], onImagesChange }: FileInputProps) => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [files, dispatch] = useReducer(
     fileInputReducer,
-    initialImages.map((url) => ({
-      file: new File([], url.split("/").pop() || ""),
-      preview: url,
-      isExisting: true,
-      error: false,
-      status: "complete" as const,
-    }))
+    initialImages.map((url) => {
+      const fileName = url.split("/").pop() || "";
+      const extension = fileName.split(".").pop()?.toLowerCase() || "";
+
+      const mimeTypes: Record<string, string> = {
+        jpg: "image/jpeg",
+        jpeg: "image/jpeg",
+        png: "image/png",
+        gif: "image/gif",
+        webp: "image/webp",
+      };
+
+      const mimeType = mimeTypes[extension] || "image/jpeg";
+
+      const img = new Image();
+      img.src = `/public/images/${url}`;
+
+      return {
+        file: new File([""], fileName, {
+          type: mimeType,
+        }),
+        preview: `/public/images/${url}`,
+        isExisting: true,
+        error: false,
+        status: "complete" as const,
+      };
+    })
   );
+
+  const getImageSize = async (url: string): Promise<number> => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return blob.size;
+    } catch (error) {
+      console.error("Error al obtener el tamaño de la imagen:", error);
+      return 0;
+    }
+  };
+
+  useEffect(() => {
+    const loadImageSizes = async () => {
+      const updatedFiles = await Promise.all(
+        files.map(async (file) => {
+          if (file.isExisting) {
+            const size = await getImageSize(file.preview);
+            return {
+              ...file,
+              file: new File([new Blob([""])], file.file.name, {
+                type: file.file.type,
+                lastModified: new Date().getTime(),
+              }),
+              size,
+            };
+          }
+          return file;
+        })
+      );
+      dispatch({ type: "SET_FILES", payload: updatedFiles });
+    };
+
+    loadImageSizes();
+  }, []);
 
   const handleDrag = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -155,7 +210,9 @@ const FileInput = ({ initialImages = [], onImagesChange }: FileInputProps) => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-300">
-                      {(file.file.size / 1024).toFixed(0)} KB
+                      {`${((file.size || file.file.size) / 1024).toFixed(
+                        0
+                      )} KB`}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

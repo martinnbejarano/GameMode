@@ -101,6 +101,11 @@ export const editGame = async (req: CustomRequest, res: Response) => {
       return res.status(400).json({ message: "ID del juego no proporcionado" });
     }
 
+    const game = await Games.findById(gameId);
+    if (!game) {
+      return res.status(404).json({ message: "Juego no encontrado" });
+    }
+
     const updateData = {
       ...req.body,
       platforms: JSON.parse(req.body.platforms),
@@ -110,6 +115,15 @@ export const editGame = async (req: CustomRequest, res: Response) => {
         req.body.recommendedSystemRequirements
       ),
     };
+
+    // Manejar las imágenes
+    const newImages = req.files as Express.Multer.File[];
+    const existingImages = game.images || [];
+
+    if (newImages && newImages.length > 0) {
+      const newImageNames = newImages.map((file) => file.filename);
+      updateData.images = [...existingImages, ...newImageNames];
+    }
 
     const updatedGame = await Games.findByIdAndUpdate(
       gameId,
