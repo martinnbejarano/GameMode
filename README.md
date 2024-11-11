@@ -110,7 +110,63 @@ curl http://localhost:3000/api/health
 
 ### Frontend
 
-// ... (resto del contenido existente) ...
+1. Navegar al directorio del frontend
+
+```bash
+git clone https://github.com/martinnbejarano/GameMode.git
+cd gamemode/frontend
+```
+
+2. Instalar dependencias
+
+```bash
+npm install
+```
+
+3. Configurar variables de entorno
+
+```bash
+cp .env.example .env
+```
+
+Editar el archivo `.env` con las siguientes variables:
+
+```env
+REACT_APP_API_URL=http://localhost:3000
+```
+
+4. Estructura de directorios del frontend
+
+```
+frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── utils/
+│   └── index.tsx
+├── dist/
+├── node_modules/
+├── .env
+├── .gitignore
+├── package.json
+└── tsconfig.json
+```
+
+5. Iniciar servidor de desarrollo
+
+```bash
+npm run dev
+
+npm start
+```
+
+6. Verificar instalación
+
+El servidor estará corriendo en `http://localhost:5173`. Puedes probar la aplicación con:
+
+```bash
+curl http://localhost:5173
+```
 
 ## Contribución 🤝
 

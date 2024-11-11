@@ -63,6 +63,7 @@ export const Register: React.FC = () => {
           ? {
               email: formData.email,
               password: formData.password,
+              confirmPassword: formData.confirmPassword,
               type: formData.type,
               username: formData.username,
             }
