@@ -8,19 +8,24 @@ export interface SystemRequirements {
 }
 
 export interface Game {
-  _id?: string;
+  _id: string;
   name: string;
   description: string;
   price: number;
   category: string;
   platforms: string[];
   languages: string[];
-  images: (string | File)[];
+  images: string[];
+  createdAt: Date;
+  companyId:
+    | string
+    | {
+        _id: string;
+        name: string;
+      };
   minimumSystemRequirements: SystemRequirements;
   recommendedSystemRequirements: SystemRequirements;
-  createdAt?: Date;
   updatedAt?: Date;
-  companyId?: string;
   isActive?: boolean;
   averageRating?: number;
   views?: number;

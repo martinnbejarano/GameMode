@@ -5,10 +5,7 @@ import { Link } from "react-router-dom";
 import { Review } from "../../../interfaces/Review";
 
 interface Props {
-  reviews: {
-    success: boolean;
-    data: Review[];
-  };
+  reviews: Review[];
   onSubmitReview: (content: string, rating: number) => void;
 }
 
@@ -20,7 +17,6 @@ export const GameReviews = ({ reviews, onSubmitReview }: Props) => {
   const isAuthenticated = !!user;
   const userType = user?.type;
   const canReview = isAuthenticated && userType === "user";
-  const defaultAvatar = "../../public/images/profilePic.jpeg";
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("es-ES", {
@@ -50,7 +46,11 @@ export const GameReviews = ({ reviews, onSubmitReview }: Props) => {
         <article className="review-form mb-8">
           <div className="usr-info">
             <img
-              src={user.profilePicture || defaultAvatar}
+              src={
+                user
+                  ? `https://avatar.iran.liara.run/public/boy?username=${user.username}`
+                  : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+              }
               className="user-avatar w-12 h-12 rounded-full"
               alt="User avatar"
             />
@@ -61,8 +61,10 @@ export const GameReviews = ({ reviews, onSubmitReview }: Props) => {
                   <button
                     key={star}
                     onClick={() => setRating(star)}
-                    className={`star-button text-xl ${
-                      star <= rating ? "text-yellow-400" : "text-gray-300"
+                    className={`text-2xl transition-all duration-200 transform hover:scale-110 ${
+                      star <= rating
+                        ? "text-yellow-400 hover:text-yellow-500"
+                        : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
                     ★
@@ -77,7 +79,7 @@ export const GameReviews = ({ reviews, onSubmitReview }: Props) => {
             placeholder="Comparte detalles sobre tu experiencia en el juego"
             className="review-textarea mt-4"
           />
-          <div className="review-submit mt-4">
+          <div className="review-submit mt-4 flex justify-end">
             <Button
               onClick={() => {
                 if (newReview.trim() && rating > 0) {
@@ -86,7 +88,7 @@ export const GameReviews = ({ reviews, onSubmitReview }: Props) => {
                   setRating(0);
                 }
               }}
-              className="bg-primary text-white"
+              className="bg-primaryv2"
               disabled={!newReview.trim() || rating === 0}
             >
               Enviar reseña
@@ -101,35 +103,30 @@ export const GameReviews = ({ reviews, onSubmitReview }: Props) => {
         </div>
       )}
       <div className="reviews-list space-y-6">
-        {reviews.data && reviews.data.length > 0 ? (
-          reviews.data.map((review, index) => (
-            <article
-              key={index}
-              className="review-item bg-white p-4 rounded-lg shadow"
-            >
-              <div className="flex items-start gap-4">
-                <img
-                  src={review.user.profilePicture || defaultAvatar}
-                  className="w-12 h-12 rounded-full"
-                  alt={`${review.user.username}'s avatar`}
-                />
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-semibold">{review.user.username}</h4>
-                      <div className="text-yellow-400">
-                        {"★".repeat(review.rating)}
-                        <span className="text-gray-300">
-                          {"★".repeat(5 - review.rating)}
-                        </span>
-                      </div>
-                    </div>
-                    <span className="text-sm text-gray-500">
+        {reviews && reviews.length > 0 ? (
+          reviews.map((review, index) => (
+            <article key={index} className="flex gap-4">
+              <img
+                src={
+                  review.user.profilePicture ||
+                  `https://avatar.iran.liara.run/public/boy?username=${review.user.username}`
+                }
+                className="size-12 rounded-full"
+                alt={`${review.user.username}'s avatar`}
+              />
+              <div>
+                <div>
+                  <h4 className="text-lg font-semibold">
+                    {review.user.username}
+                  </h4>
+                  <div className="flex items-center gap-2">
+                    <span>{"⭐️".repeat(review.rating)}</span>
+                    <span className="text-sm text-[#707579]">
                       {formatDate(review.createdAt)}
                     </span>
                   </div>
-                  <p className="mt-2 text-gray-700">{review.content}</p>
                 </div>
+                <p className="mt-2 text-gray-700">{review.content}</p>
               </div>
             </article>
           ))

@@ -107,6 +107,24 @@
   overflow: hidden;
 }
 
+.system-requirements-table th {
+  background-color: #3a475a;
+  color: white;
+  font-weight: bold;
+  padding: 1rem;
+  text-align: left;
+}
+
+.system-requirements-table td {
+  background-color: var(--color-primaryv1);
+  color: white;
+  padding: 1rem;
+}
+
+.system-requirements-table tr:nth-child(even) td {
+  background-color: var(--color-primaryv1-light);
+}
+
 /* Reviews Section */
 .reviews-section {
   display: flex;

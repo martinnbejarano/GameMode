@@ -197,3 +197,31 @@ export const addReview = async (req: CustomRequest, res: Response) => {
     });
   }
 };
+
+export const getMyGames = async (req: CustomRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "No autorizado" });
+    }
+
+    const user = await User.findById(req.user._id).populate({
+      path: "games",
+      select: "name price images category platforms",
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user.games,
+    });
+  } catch (error) {
+    console.error("Error en getMyGames:", error);
+    res.status(500).json({
+      message: "Error al obtener tus juegos",
+      error: error instanceof Error ? error.message : "Error desconocido",
+    });
+  }
+};

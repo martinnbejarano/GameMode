@@ -73,7 +73,11 @@ export const Header: React.FC = () => {
             </button>
             <div className="relative">
               <img
-                src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                src={
+                  user
+                    ? `https://avatar.iran.liara.run/public/boy?username=${user.username}`
+                    : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                }
                 alt="Usuario"
                 className="size-12 md:size-14 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
                 onClick={() => setIsOpen(!isOpen)}

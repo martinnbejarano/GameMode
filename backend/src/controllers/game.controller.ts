@@ -55,7 +55,7 @@ export const getGameReviews = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const game = await Games.findById(id);
+    const game = await Games.findById(id).populate("companyId", "name");
     if (!game) {
       return res.status(404).json({
         success: false,
@@ -65,11 +65,20 @@ export const getGameReviews = async (req: Request, res: Response) => {
 
     const reviews = await Review.find({ game: id })
       .populate("user", "username profilePicture")
+      .populate({
+        path: "game",
+        select: "name companyId",
+        populate: {
+          path: "companyId",
+          select: "name",
+        },
+      })
       .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
       data: reviews,
+      company: game.companyId,
     });
   } catch (error) {
     console.error("Error en getGameReviews:", error);

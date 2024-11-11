@@ -1,5 +1,4 @@
 import { Game } from "../../../interfaces/Game";
-import "./GameHeader.css";
 
 interface Props {
   game: Game;
@@ -7,12 +6,14 @@ interface Props {
 
 export const GameHeader = ({ game }: Props) => {
   return (
-    <div className="game-header-container">
-      <h2 className="game-title">{game.name}</h2>
-      <span className="game-rating">
-        {"⭐️".repeat(Math.round(game.averageRating || 0))}
-        {" ".repeat(5 - Math.round(game.averageRating || 0))}
-        {game.averageRating?.toFixed(1) || "0.0"}
+    <div className="flex justify-between items-center mb-8">
+      <h2 className="text-2xl font-semibold">{game.name}</h2>
+      <span className="text-yellow-400">
+        {"★".repeat(Math.round(game.averageRating || 0))}
+        {"☆".repeat(5 - Math.round(game.averageRating || 0))}
+        <span className="ml-2 text-gray-600">
+          {game.averageRating?.toFixed(1) || "0.0"}
+        </span>
       </span>
     </div>
   );

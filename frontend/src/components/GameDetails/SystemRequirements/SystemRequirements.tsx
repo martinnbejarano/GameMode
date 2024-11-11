@@ -56,16 +56,22 @@ export const SystemRequirements = ({
       isStriped
       aria-label="Requisitos del sistema"
       removeWrapper
-      className="system-requirements-table"
+      className="border-collapse rounded-lg text-white"
     >
-      <TableHeader>
-        <TableColumn>Componente</TableColumn>
-        <TableColumn>Mínimo</TableColumn>
-        <TableColumn>Recomendado</TableColumn>
+      <TableHeader className="bg-[#3a475a] border-collapse">
+        <TableColumn className="bg-[#3a475a] text-white font-bold border-collapse">
+          Componente
+        </TableColumn>
+        <TableColumn className="bg-[#3a475a] text-white font-bold border-collapse">
+          Mínimo
+        </TableColumn>
+        <TableColumn className="bg-[#3a475a] text-white font-bold border-collapse">
+          Recomendado
+        </TableColumn>
       </TableHeader>
       <TableBody>
         {requirements.map((req, index) => (
-          <TableRow key={index}>
+          <TableRow className="bg-primaryv1 border-collapse" key={index}>
             <TableCell>{req.component}</TableCell>
             <TableCell>{req.min}</TableCell>
             <TableCell>{req.rec}</TableCell>

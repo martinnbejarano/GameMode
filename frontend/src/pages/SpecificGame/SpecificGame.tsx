@@ -10,14 +10,16 @@ import {
   GameReviews,
 } from "../../components/GameDetails";
 import { axi } from "../../utils/axiosInstance";
-import "./SpecificGame.css";
+import toast from "react-hot-toast";
+
 export const SpecificGame = () => {
   const { id } = useParams();
   const { data: game, loading, error } = useFetch<Game>(`/games/${id}`);
-  const { data: reviews } = useFetch<{ success: boolean; data: Review[] }>(
-    `/games/${id}/reviews`
-  );
-  console.log(reviews);
+  const { data: reviews, refetch: refetchReviews } = useFetch<{
+    success: boolean;
+    data: Review[];
+  }>(`/games/${id}/reviews`);
+
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -35,39 +37,41 @@ export const SpecificGame = () => {
 
   const handleSubmitReview = async (content: string, rating: number) => {
     try {
-      await axi.post(`/games/${id}/reviews`, {
+      await axi.post(`/users/reviews/${id}/`, {
         content,
         rating,
       });
+      toast.success("Reseña enviada con éxito");
+      await refetchReviews();
     } catch (error) {
-      console.log(error);
+      toast.error((error as Error).message);
     }
   };
 
   return (
-    <div className="mt-[60px] p-8 text-primaryFont">
+    <div className="flex flex-col gap-4 text-primaryFont mt-[60px] p-8">
       <GameHeader game={game} />
 
-      <div className="flex flex-col lg:flex-row gap-8">
-        <GameGallery images={game.images as string[]} />
+      <section className="flex flex-col gap-8 items-start lg:flex-row">
+        <div className="w-full lg:w-2/3">
+          <GameGallery images={game.images as string[]} />
+        </div>
         <GameInfo game={game} />
-      </div>
+      </section>
 
-      <div className="mt-8">
-        <h3 className="text-2xl font-semibold mb-4">Requisitos del Sistema</h3>
+      <section>
         <SystemRequirements
           minimumRequirements={game.minimumSystemRequirements}
           recommendedRequirements={game.recommendedSystemRequirements}
         />
-      </div>
+      </section>
 
-      <div className="mt-8">
-        <h3 className="text-2xl font-semibold mb-4">Reseñas</h3>
+      <section className="flex flex-col gap-4 md:gap-8 mt-8 md:mt-12">
         <GameReviews
           reviews={reviews?.data || []}
           onSubmitReview={handleSubmitReview}
         />
-      </div>
+      </section>
     </div>
   );
 };
