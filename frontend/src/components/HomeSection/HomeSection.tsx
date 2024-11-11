@@ -2,10 +2,12 @@ import "./HomeSection.css";
 import { useFetch } from "../../Hooks";
 import Carousel from "../Carousel/Carousel";
 import { Game } from "../../interfaces/Game";
+import { Button } from "@nextui-org/react";
+import { useAuthStore } from "../../store/authStore";
 
 const HomeSection: React.FC = () => {
-  // Cambiamos el tipo genérico a Game[] directamente
   const { data, loading, error } = useFetch<Game[]>("/games");
+  const user = useAuthStore((state) => state.user);
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -15,8 +17,7 @@ const HomeSection: React.FC = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  // Tomamos los primeros 3 juegos directamente del array data
-  const featuredGames = data?.slice(0, 2) || [];
+  const featuredGames = data?.slice(0, 3) || [];
 
   return (
     <>
@@ -29,10 +30,7 @@ const HomeSection: React.FC = () => {
           <h3 className="catalogo_imagen_fondo_texto sombra-txt">
             El mayor catálogo de juegos y entretenimiento
           </h3>
-          <a
-            className="btn btn-success mi-btn-catalogo btn-catalogo"
-            href="/games"
-          >
+          <a className="btn-catalogo" href="/games">
             Ver Juegos
           </a>
           <img
@@ -49,6 +47,16 @@ const HomeSection: React.FC = () => {
             precios excelentes.
           </p>
         </div>
+        {!user && (
+          <div className="flex gap-4 justify-center my-8">
+            <Button as="a" href="/login" className="bg-primaryv1 text-white">
+              Iniciar Sesión
+            </Button>
+            <Button as="a" href="/register" className="bg-primaryv1 text-white">
+              Registrarse
+            </Button>
+          </div>
+        )}
       </section>
     </>
   );

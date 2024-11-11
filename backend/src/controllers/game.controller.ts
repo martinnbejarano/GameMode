@@ -4,7 +4,7 @@ import { Review } from "../models/comment.model.js";
 
 export const getGames = async (req: Request, res: Response) => {
   try {
-    const { category, minPrice, maxPrice, minRating } = req.query;
+    const { category, minPrice, maxPrice, minRating, language, os } = req.query;
 
     let query: any = {};
 
@@ -21,6 +21,15 @@ export const getGames = async (req: Request, res: Response) => {
     if (minRating) {
       query.averageRating = { $gte: Number(minRating) };
     }
+
+    if (language) {
+      query.languages = language;
+    }
+
+    if (os) {
+      query["minimumSystemRequirements.OS"] = os;
+    }
+
     console.log(query);
     const games = await Games.find(query);
     res.status(200).json(games);

@@ -7,6 +7,7 @@ import {
   editGame,
   getMySales,
   getMyGamesStats,
+  deleteGame,
 } from "../controllers/company.controller.js";
 
 const router = express.Router();
@@ -17,5 +18,6 @@ router.get("/games", getMyGames);
 router.put("/games/:id", upload.array("images"), editGame);
 router.get("/sales", getMySales);
 router.get("/games-stats", getMyGamesStats);
+router.delete("/games/:id", deleteGame);
 
 export default router;

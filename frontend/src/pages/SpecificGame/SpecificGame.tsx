@@ -4,7 +4,6 @@ import { Game } from "../../interfaces/Game";
 import { Review } from "../../interfaces/Review";
 import {
   GameHeader,
-  GameGallery,
   GameInfo,
   SystemRequirements,
   GameReviews,
@@ -54,7 +53,11 @@ export const SpecificGame = () => {
 
       <section className="flex flex-col gap-8 items-start lg:flex-row">
         <div className="w-full lg:w-2/3">
-          <GameGallery images={game.images as string[]} />
+          <img
+            src={`/public/images/${game.images[0]}`}
+            alt={game.name}
+            className="w-full h-[300px] md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden"
+          />
         </div>
         <GameInfo game={game} />
       </section>

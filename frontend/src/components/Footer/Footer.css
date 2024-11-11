@@ -1,8 +1,9 @@
 .footer {
-  background-color: #3a4856;
+  background-color: var(--color-azul);
   color: white;
   padding: 1rem;
   text-align: center;
+  z-index: 1000;
 }
 
 .footer-content {

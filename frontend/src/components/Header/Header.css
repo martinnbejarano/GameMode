@@ -10,6 +10,7 @@
 .navbar {
   height: 100%;
   padding: 0 20px;
+  margin-top: 10px;
 }
 
 .grid-container {
@@ -274,16 +275,14 @@
     flex: 1;
     justify-content: flex-end;
     position: relative;
-    padding-right: 80px; /* Espacio para los controles */
+    padding-right: 80px;
   }
 
   .search-container {
     position: absolute;
     left: 0;
     transform: none;
-    width: calc(
-      100% - 100px
-    ); /* Ancho ajustado para dejar espacio a los controles */
+    width: calc(100% - 100px);
   }
 
   .search-input {
@@ -335,11 +334,10 @@
   }
 
   .main-content {
-    margin-top: 60px; /* Mantener el mismo margen en móvil */
+    margin-top: 60px;
   }
 }
 
-/* Para asegurar que el menú desplegable funcione correctamente en móvil */
 @media (max-width: 768px) {
   .dropdown-content {
     display: none;
@@ -351,23 +349,21 @@
 }
 
 .dropdown-content.show {
-  /* Clase auxiliar para el contenido principal */
   .main-content {
-    padding-top: 60px; /* Ajusta este valor según la altura de tu header */
+    padding-top: 60px;
   }
 
   display: block;
 }
 
 .main-content {
-  margin-top: 60px; /* Debe ser igual a la altura del header */
+  margin-top: 60px;
   width: 100%;
 }
 
-/* Para pantallas muy pequeñas */
 @media (max-width: 400px) {
   .header-right {
-    padding-right: 70px; /* Reducir el padding */
+    padding-right: 70px;
   }
 
   .search-container {

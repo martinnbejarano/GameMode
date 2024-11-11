@@ -7,9 +7,9 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
-import { axi } from "../utils/axiosInstance";
 import { toast } from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
+import { useFetch } from "../Hooks/useFetch";
 
 interface Sale {
   _id: string;
@@ -20,7 +20,7 @@ interface Sale {
     price: number;
   };
   price: number;
-  date: string;
+  purchaseDate: string;
 }
 
 interface SalesResponse {
@@ -31,31 +31,31 @@ interface SalesResponse {
 }
 
 export const CompanySales = () => {
+  const { data, loading, error } = useFetch<SalesResponse>("/company/sales");
   const [sales, setSales] = useState<Sale[]>([]);
-  const [loading, setLoading] = useState(true);
   const [totalRevenue, setTotalRevenue] = useState(0);
-
-  const fetchSales = async () => {
-    try {
-      const response = await axi.get<SalesResponse>("/company/sales");
-      setSales(response.data.data);
-      setTotalRevenue(response.data.totalRevenue);
-    } catch (error) {
-      console.error(error);
-      toast.error("Error al cargar las ventas");
-    } finally {
-      setLoading(false);
-    }
-  };
+  console.log(data);
 
   useEffect(() => {
-    fetchSales();
-  }, []);
+    if (data) {
+      setSales(data.data);
+      setTotalRevenue(data.totalRevenue);
+    }
+  }, [data]);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <ClipLoader />
+      </div>
+    );
+  }
+
+  if (error) {
+    toast.error("Error al cargar las ventas");
+    return (
+      <div className="flex justify-center items-center min-h-screen text-red-500">
+        Error al cargar las ventas
       </div>
     );
   }
@@ -94,7 +94,7 @@ export const CompanySales = () => {
                 {sale.game?.name || "Juego no disponible"}
               </TableCell>
               <TableCell>
-                {new Date(sale.date).toLocaleDateString("es-ES", {
+                {new Date(sale.purchaseDate).toLocaleDateString("es-ES", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",

@@ -1,7 +1,6 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-// Define el tipo para los datos del estado
 interface SalesProps {
   data: {
     name: string;
@@ -9,7 +8,6 @@ interface SalesProps {
   }[];
 }
 
-// Añadir esta interfaz para el estado
 interface SalesState {
   series: {
     name: string;

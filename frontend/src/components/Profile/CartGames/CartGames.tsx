@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/react";
 import { Game } from "../../../interfaces/Game";
 import { PurchaseModal } from "../../PurchaseModal/PurchaseModal";
 import "./CartGames.css";
-import "../shared-styles.css"; // Importamos los estilos compartidos
+import "../shared-styles.css";
 
 interface Props {
   games: Game[];
@@ -14,7 +14,6 @@ interface Props {
 
 export const CartGames = ({
   games,
-  onPurchase,
   onRemove,
   loading,
   onRefreshLibrary,
@@ -22,7 +21,6 @@ export const CartGames = ({
   const total = games.reduce((sum, game) => sum + game.price, 0);
 
   const handlePurchaseSuccess = () => {
-    onPurchase(games.map((game) => game._id as string));
     onRefreshLibrary();
   };
 
@@ -60,14 +58,6 @@ export const CartGames = ({
                 <p className="cart-game-price">${game.price} USD</p>
               </div>
               <div className="cart-game-actions">
-                <PurchaseModal
-                  gameId={game._id as string}
-                  price={game.price}
-                  onSuccess={() => {
-                    onPurchase([game._id as string]);
-                    onRefreshLibrary();
-                  }}
-                />
                 <Button
                   className="remove-button"
                   onClick={() => onRemove(game._id as string)}

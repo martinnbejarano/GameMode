@@ -1,4 +1,4 @@
-import { useFetch } from "../hooks/useFetch";
+import { useFetch } from "../Hooks/useFetch";
 import Sales from "../components/Charts/Sales";
 import Views from "../components/Charts/Views";
 import UserActions from "../components/Charts/UserActions";

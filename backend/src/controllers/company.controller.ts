@@ -3,7 +3,7 @@ import { Response } from "express";
 import CustomRequest from "../interfaces/CustomRequest.js";
 import { ICompany } from "../interfaces/ICompany.js";
 import mongoose from "mongoose";
-import { Sale } from "../models/sale.model.js";
+import { Purchase } from "../models/purchase.model.js";
 
 export const publishGame = async (req: CustomRequest, res: Response) => {
   try {
@@ -36,9 +36,10 @@ export const publishGame = async (req: CustomRequest, res: Response) => {
       return res.status(400).json({ message: "Faltan campos requeridos" });
     }
 
-    const imagesPath = Array.isArray(req.files)
-      ? req.files.map((file: Express.Multer.File) => file.filename)
-      : [];
+    const imagesPath =
+      req.files && Array.isArray(req.files)
+        ? req.files.map((file: Express.Multer.File) => file.filename)
+        : [];
 
     const parsedPlatforms = JSON.parse(platforms);
     const parsedLanguages = JSON.parse(languages);
@@ -116,7 +117,6 @@ export const editGame = async (req: CustomRequest, res: Response) => {
       ),
     };
 
-    // Manejar las imágenes
     const newImages = req.files as Express.Multer.File[];
     const existingImages = game.images || [];
 
@@ -154,16 +154,22 @@ export const getMySales = async (req: CustomRequest, res: Response) => {
     const companyGames = await Games.find({ companyId: _id }, "_id");
     const gameIds = companyGames.map((game) => game._id);
 
-    const sales = await Sale.find({ game: { $in: gameIds } })
-      .populate("game", "name price")
-      .sort({ date: -1 })
+    const sales = await Purchase.find({ game: { $in: gameIds } })
+      .populate({
+        path: "game",
+        select: "name price companyId",
+        match: { companyId: _id },
+      })
+      .sort({ purchaseDate: -1 })
       .lean();
+
+    const validSales = sales.filter((sale) => sale.game);
 
     res.status(200).json({
       success: true,
-      data: sales,
-      count: sales.length,
-      totalRevenue: sales.reduce((sum, sale) => sum + sale.price, 0),
+      data: validSales,
+      count: validSales.length,
+      totalRevenue: validSales.reduce((sum, sale) => sum + sale.price, 0),
     });
   } catch (error) {
     console.error("Error en getMySales:", error);
@@ -238,6 +244,20 @@ export const getMyGamesStats = async (req: CustomRequest, res: Response) => {
     console.error("Error en getMyGamesStats:", error);
     res.status(500).json({
       message: "Error al obtener las estadísticas de los juegos",
+      error: error instanceof Error ? error.message : "Error desconocido",
+    });
+  }
+};
+
+export const deleteGame = async (req: CustomRequest, res: Response) => {
+  try {
+    const gameId = req.params.id;
+    await Games.findByIdAndDelete(gameId);
+    res.status(200).json({ message: "Juego eliminado correctamente" });
+  } catch (error) {
+    console.error("Error en deleteGame:", error);
+    res.status(500).json({
+      message: "Error al eliminar el juego",
       error: error instanceof Error ? error.message : "Error desconocido",
     });
   }

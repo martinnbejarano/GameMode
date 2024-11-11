@@ -1,13 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { SearchGames } from "../../components/index";
 import { useAuthStore } from "../../store/authStore";
-import { useCardToggle } from "../../Hooks/useCardToggle";
+import { useCardToggle } from "../../hooks/useCardToggle";
 import { CiLogout, CiLogin } from "react-icons/ci";
 import { FaUserPlus } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { axi } from "../../utils/axiosInstance";
-import { Game } from "../../interfaces/Game";
 import { useFilterStore } from "../../store/filterStore";
 import { useCartStore } from "../../store/cartStore";
 
@@ -144,7 +144,11 @@ export const Header: React.FC = () => {
                   <>
                     <div className="px-4 py-3 border-b border-gray-100">
                       <Link
-                        to="/profile"
+                        to={
+                          user.type === "company"
+                            ? "/company/dashboard"
+                            : "/profile"
+                        }
                         className="flex items-center justify-between"
                       >
                         <div>

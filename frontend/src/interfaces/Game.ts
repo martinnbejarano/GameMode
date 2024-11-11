@@ -15,7 +15,7 @@ export interface Game {
   category: string;
   platforms: string[];
   languages: string[];
-  images: string[];
+  images: (string | File)[];
   createdAt?: Date;
   companyId?:
     | string

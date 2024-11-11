@@ -73,12 +73,16 @@ export const PublishGame = () => {
       );
 
       if (formData.images && formData.images.length > 0) {
-        formData.images.forEach((image) => {
+        (formData.images as File[]).forEach((image) => {
           formDataToSend.append("images", image);
         });
       }
 
-      await axi.post("/company/games", formDataToSend);
+      await axi.post("/company/games", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       toast.success("Juego publicado exitosamente");
       navigate("/company/my-games");
