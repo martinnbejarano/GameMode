@@ -22,6 +22,7 @@ export const CartGames = ({
 
   const handlePurchaseSuccess = () => {
     onRefreshLibrary();
+    games.forEach((game) => onRemove(game._id as string));
   };
 
   return (

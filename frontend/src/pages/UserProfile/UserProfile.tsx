@@ -82,9 +82,11 @@ export const UserProfile = () => {
       for (const gameId of gameIds) {
         await axi.post(`/purchases/${gameId}`);
         await axi.delete(`/users/cart/${gameId}`);
+        decrementCartCount();
       }
       toast.success("¡Compra realizada con éxito!");
       refetchCart();
+      refetchLibrary();
     } catch (error) {
       toast.error("Error al procesar la compra");
     } finally {

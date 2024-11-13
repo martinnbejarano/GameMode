@@ -22,7 +22,7 @@ export const Header: React.FC = () => {
   const { cartCount, setCartCount } = useCartStore();
 
   const fetchCartCount = async () => {
-    if (!user) {
+    if (!user || user.type === "company") {
       setCartCount(0);
       return;
     }
