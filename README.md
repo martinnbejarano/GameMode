@@ -2,31 +2,62 @@
 
 ## Descripción
 
+Este proyecto es la entrega del Trabajo Práctico Obligatorio (TPO) para la materia de **Aplicaciones Interactivas** del segundo semestre de 2024 dictada por Timerman Joaquin, en la carrera de **Ingeniería en Informática** en la **Universidad Argentina de la Empresa (UADE)**. Consiste en un frontend desarrollado en _React.js_ y un backend en **Node.js**, formando una aplicación de marketplace videojuegos completa.
+videojuegos completa.
+
+## Integrantes del equipo
+
+- ⁠Martin Bejarano
+- ⁠Tomas Dominguez
+- Maximiliano Eredjian
+
 GameMode es una plataforma de marketplace de videojuegos que permite a las empresas desarrolladoras publicar y vender sus juegos, mientras que los usuarios pueden descubrir, comprar y gestionar su biblioteca de juegos.
 
 ## Características Principales 🚀
 
 ### Para Usuarios
 
-- Exploración de juegos con filtros avanzados (categoría, precio, calificación)
-- Sistema de reseñas y calificaciones
-- Lista de deseos personalizada
+### Exploración de juegos con filtros avanzados (categoría, precio, calificación)
+
+![Exploración de juegos](./Images/Games.png)
+
+### Detalles del juego
+
+![Detalles del juego](./Images/game.png)
+
+### Sistema de reseñas y calificaciones
+
+![Sistema de reseñas](./Images/comments.png)
+
+### Lista de deseos personalizada
+
 - Biblioteca de juegos comprados
-- Sistema de comentarios en juegos
 
 ### Para Empresas
 
-- Panel de control para gestión de juegos
-- Estadísticas detalladas de ventas y engagement
-- Gestión de publicaciones de juegos
-- Seguimiento de métricas (vistas, wishlist, conversión)
+### Panel de control para gestión de juegos
+
+![Panel de control](./Images/my-games.png)
+
+### Estadísticas detalladas de ventas
+
+![Estadísticas](./Images/sales.png)
+
+### Gestión de publicaciones de juegos
+
+- Seguimiento de métricas (vistas, wishlist, conversión, ganancias)
+
+![Estadísticas](./Images/stats.png)
+![Estadísticas 2](./Images/stats2.png)
 
 ## Tecnologías Utilizadas 💻
 
+- Frontend: React con TailwindCSS
 - Backend: Node.js con Express y TypeScript
 - Base de datos: MongoDB con Mongoose
 - Autenticación: JWT
 - Manejo de archivos: Multer
+- Envío de correos: Nodemailer
 
 ## Instalación y Configuración 🔧
 
@@ -96,17 +127,11 @@ backend/
 
 ```bash
 npm run dev
-
-npm start
 ```
 
 7. Verificar instalación
 
 El servidor estará corriendo en `http://localhost:3000`. Puedes probar la API con:
-
-```bash
-curl http://localhost:3000/api/health
-```
 
 ### Frontend
 
@@ -125,11 +150,7 @@ npm install
 
 3. Configurar variables de entorno
 
-```bash
-cp .env.example .env
-```
-
-Editar el archivo `.env` con las siguientes variables:
+Crear un archivo `.env` con las siguientes variables:
 
 ```env
 REACT_APP_API_URL=http://localhost:3000
@@ -164,21 +185,9 @@ npm start
 
 El servidor estará corriendo en `http://localhost:5173`. Puedes probar la aplicación con:
 
-```bash
-curl http://localhost:5173
-```
-
-## Contribución 🤝
-
-1. Fork el proyecto
-2. Crea tu rama de feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
 ## Licencia 📄
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
+Este proyecto está bajo la Licencia GameMode - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
 
 ## Estado del Proyecto 🚦
 
@@ -186,4 +195,4 @@ En desarrollo activo - Versión 1.0.0
 
 ---
 
-⌨️ con ❤️ por GameMode
+Hecho con ❤️ por GameMode
