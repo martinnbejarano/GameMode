@@ -38,8 +38,6 @@ export const protectRouteUser = async (
       .select("-password -resetPasswordToken")
       .lean();
 
-    console.log("Usuario encontrado:", user);
-
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }

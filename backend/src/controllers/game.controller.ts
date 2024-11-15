@@ -46,7 +46,7 @@ export const getGameById = async (req: Request, res: Response) => {
     if (!game) {
       return res.status(404).json({ message: "Juego no encontrado" });
     }
-
+    console.log("+1 view");
     game.views += 1;
     await game.save();
 
@@ -94,51 +94,6 @@ export const getGameReviews = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: "Error al obtener las reviews",
-      error: error instanceof Error ? error.message : "Error desconocido",
-    });
-  }
-};
-
-export const addView = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "ID del juego no proporcionado",
-      });
-    }
-
-    const updatedGame = await Games.findByIdAndUpdate(
-      id,
-      { $inc: { views: 1 } },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    if (!updatedGame) {
-      return res.status(404).json({
-        success: false,
-        message: "Juego no encontrado",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Vista agregada correctamente",
-      data: {
-        gameId: id,
-        views: updatedGame.views,
-      },
-    });
-  } catch (error) {
-    console.error("Error en addView:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Error al incrementar las vistas",
       error: error instanceof Error ? error.message : "Error desconocido",
     });
   }

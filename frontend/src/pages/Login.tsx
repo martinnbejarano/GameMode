@@ -46,7 +46,7 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-secondaryv1">
+    <div className="flex flex-col items-center justify-center min-h-screen mt-12 bg-secondaryv1">
       <section className="flex flex-col items-start gap-12 py-12 px-4 max max-w-[300px] md:max-w-[400px] bg-primaryv1 rounded-md shadow-xl">
         <div className="flex flex-col items-center gap-2">
           <img

@@ -22,7 +22,7 @@ export const ResetPassword: React.FC = () => {
       return;
     }
     try {
-      const response = await axi.post(`/auth/reset-password/${id}/${token}`, {
+      const response = await axi.post(`/auth/new-password/${id}/${token}`, {
         password: newPassword,
       });
       if (response.status === 200) {

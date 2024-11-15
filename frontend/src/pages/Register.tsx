@@ -100,7 +100,7 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-secondaryv1 pb-52 md:mb-0">
+    <div className="flex flex-col items-center justify-center mt-12 min-h-screen bg-secondaryv1 pb-52 md:mb-0">
       <section className="flex flex-col items-center gap-12 py-12 px-4 max max-w-[300px] md:max-w-[400px] bg-primaryv1 rounded-md shadow-xl">
         <div className="flex flex-col items-center gap-2">
           <img

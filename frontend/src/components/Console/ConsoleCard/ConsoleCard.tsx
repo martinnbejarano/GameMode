@@ -19,12 +19,14 @@ export const ConsoleCard: React.FC<ConsoleCardProps> = ({
       className={`consola_contenedor-consolas ${reverse ? "reverse" : ""}`}
     >
       <div className="consola_contenedor-consolas_text">
-        <h2 className="consola_contenedor-consolas_text-titulo">{title}</h2>
+        <h2 className="consola_contenedor-consolas_text-titulo text-2xl font-bold">
+          {title}
+        </h2>
         <p className="consola_contenedor-consolas_text-p">{description}</p>
       </div>
       <div className="consola_contenedor-consolas_imagen">
         <img
-          className="consola_contenedor-consolas_imagen-marcas"
+          className="consola_contenedor-consolas_imagen-marcas rounded-sm"
           src={image}
           alt={title}
         />

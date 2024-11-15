@@ -24,7 +24,7 @@ export const ForgotPasswordModal = () => {
     }
 
     try {
-      const response = await axi.post("/auth/forgot-password", { email });
+      const response = await axi.post("/auth/mail-password", { email });
       if (response.status === 200) {
         toast.success("Recuperacion de contraseña enviada");
       }

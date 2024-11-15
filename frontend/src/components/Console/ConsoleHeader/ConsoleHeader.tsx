@@ -5,7 +5,7 @@ export const ConsoleHeader: React.FC = () => {
   return (
     <article className="consola-contenedor">
       <div className="consola-contenedor_texto">
-        <h1 className="consola-contenedor_texto_h1">
+        <h1 className="consola-contenedor_texto_h1 text-2xl font-bold">
           Elegí la consola que más va con vos
         </h1>
       </div>
