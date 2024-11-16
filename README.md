@@ -2,8 +2,7 @@
 
 ## Descripción
 
-Este proyecto es la entrega del Trabajo Práctico Obligatorio (TPO) para la materia de **Aplicaciones Interactivas** del segundo semestre de 2024 dictada por Timerman Joaquin, en la carrera de **Ingeniería en Informática** en la **Universidad Argentina de la Empresa (UADE)**. Consiste en un frontend desarrollado en _React.js_ y un backend en **Node.js**, formando una aplicación de marketplace videojuegos completa.
-videojuegos completa.
+Este proyecto es la entrega del Trabajo Práctico Obligatorio (TPO) para la materia de **Aplicaciones Interactivas** del segundo semestre de 2024 dictada por Timerman Joaquin, en la carrera de **Ingeniería en Informática** en la **Universidad Argentina de la Empresa (UADE)**. Consiste en un frontend desarrollado en _React.js_ y un backend en **Node.js**, formando una aplicación de marketplace de videojuegos completa.
 
 ## Integrantes del equipo
 
